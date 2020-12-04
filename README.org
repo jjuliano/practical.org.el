@@ -1,0 +1,75 @@
+* practical.org.el
+Practical GTD and Zettelkasten workflow system for Emacs
+
+* Motivation
+
+I'd like to create a GTD+Zettelkasten system that is both simple and practical,
+that will caters to exactly what I need for my day-to-day tasks.
+
+I have explored and personally used several GTD system, and found them to be
+overly complex for my needs.
+
+The configuration aims to have a practical GTD system using vanilla Emacs
+without any unnecessary packages, as possible, and no package-manager handling
+magic as well other than the built-in =locate-library=.
+
+There are several packages that optionally can be installed from MELPA/ELPA via
+=M-x package-install=, however, they will only be activated when they are
+installed, this library uses the built-in =locate-library= to check if those
+packages are installed.
+
+* Features
+
+** Org-Capture Menu
+
+You start by opening the capture menu. On this menu, you can select the GTD or
+Zettelkasten actions that you want to do. Here are all the actions that will be
+presented in the capture menu. Org agenda can be opened by pressing =C-c a=.
+
+| Action     | Description                          | Keystroke        |
+|------------+--------------------------------------+------------------|
+| Inbox      | Add new inbox items                  | C-c c i or C-c i |
+| Agenda     | Create new Scheduled agenda item     | C-c c a          |
+| Note       | Create a new note entry to notes.org | C-c c n          |
+| Brain dump | Create a note as a new org file      | C-c c n or C-c b |
+
+If you installed the =bbdb= version 3 package (The Insidious Big Brother
+Database), the capture menu will have additional items, namely:
+
+| Action         | Description                | Keystroke |
+|----------------+----------------------------+-----------|
+| All Contacts   | Show all contacts          | C-c c C   |
+| New Contact    | Create a new contact       | C-c c c   |
+| Search Contact | Regexp search all contacts | C-c c s   |
+
+While on =bbdb= window, you can add, remove, insert entries and copy each
+contacts. Here are the most useful =bbdb= keystrokes, note that they don't
+require the control keys to be pressed.
+
+| Action | Description          | Keystroke |
+|--------+----------------------+-----------|
+| Create | Create a new contact | c         |
+| Edit   | Edit contact         | e         |
+| Insert | Insert a line        | i         |
+| Copy   | Copy the contact     | Cr        |
+| Save   | Save the contact     | s         |
+
+** GTD workflow
+
+For most workflow, everything starts with an =inbox=. You can start your day
+with filing up the =inbox= items and refiling them into =projects= or =agenda=.
+Some files are intentionally removed as they did not fit the workflow.
+
+Each item will be prompted for an initial state, and each item state has it's
+own progressions.
+
+Here's the table of the initial states. Changing states can be performed via
+=C-c C-t=.
+
+| State   | Suggested Use                     | Progressions                                          |
+|---------+-----------------------------------+-------------------------------------------------------|
+| TODO    | Generic item                      | TODO -> NEXT -> DONE                                  |
+| NEXT    | Next item                         | NEXT -> PLANNING -> INPROGRESS/WAITING/PARKED -> DONE |
+| PHONE   | Phone call agenda                 | PHONE/CANCELLED -> DONE                               |
+| MEETING | Meeting agenda                    | MEETING/CANCELLED -> DONE                             |
+| NOTE    | Single note item or new note item | NOTE/REFERENCE/TITLE/SUBJECT                          |
