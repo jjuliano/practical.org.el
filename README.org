@@ -28,10 +28,13 @@ presented in the capture menu. Org agenda can be opened by pressing =C-c a=.
 
 | Action     | Description                          | Keystroke        |
 |------------+--------------------------------------+------------------|
-| Inbox      | Add new inbox items                  | C-c c i or C-c i |
+| Inbox      | Add new inbox item                   | C-c c i or C-c i |
 | Agenda     | Create new Scheduled agenda item     | C-c c a          |
+| Recurring  | Create a new recurring agenda        | C-c c r          |
+| Routine    | Create a new routine item            | C-c c R          |
+| Habit      | Create a new habit item              | C-c c h          |
 | Note       | Create a new note entry to notes.org | C-c c n          |
-| Brain dump | Create a note as a new org file      | C-c c n or C-c b |
+| Brain dump | Create a note as a new org file      | C-c c b or C-c b |
 
 If you installed the =bbdb= version 3 package (The Insidious Big Brother
 Database), the capture menu will have additional items, namely:
@@ -58,7 +61,6 @@ require the control keys to be pressed.
 
 For most workflow, everything starts with an =inbox=. You can start your day
 with filing up the =inbox= items and refiling them into =projects= or =agenda=.
-Some files are intentionally removed as they did not fit the workflow.
 
 Each item will be prompted for an initial state, and each item state has it's
 own progressions.
@@ -66,10 +68,48 @@ own progressions.
 Here's the table of the initial states. Changing states can be performed via
 =C-c C-t=.
 
-| State   | Suggested Use                     | Progressions                                          |
-|---------+-----------------------------------+-------------------------------------------------------|
-| TODO    | Generic item                      | TODO -> NEXT -> DONE                                  |
-| NEXT    | Next item                         | NEXT -> PLANNING -> INPROGRESS/WAITING/PARKED -> DONE |
-| PHONE   | Phone call agenda                 | PHONE/CANCELLED -> DONE                               |
-| MEETING | Meeting agenda                    | MEETING/CANCELLED -> DONE                             |
-| NOTE    | Single note item or new note item | NOTE/REFERENCE/TITLE/SUBJECT                          |
+| Initial state       | Suggested use                               | Progressions                                      |
+|---------------------+---------------------------------------------+---------------------------------------------------|
+| TODO                | Generic item                                | TODO -> NEXT/DOING/BLOCKED/REVIEW -> DONE/ARCHIVE |
+| WAITING             | Items that has dependency on other people,  |                                                   |
+|                     | that you are waiting for other people to do | HOLD                                              |
+| PHONE/MEETING/VIDEO | Phone/Meeting/Video call agenda             | CANCELLED                                         |
+| NOTE                | Single note item or new note item           | NOTE/REFERENCE/TITLE/SUBJECT                      |
+
+** Archive items
+
+Over time, you can accumulate items that can clutter your agenda files.
+You can clear up your todo/agenda items by archiving them.
+
+There are 2 ways to archive an item.
+
+1. If you set the item tag as =ARCHIVE=, it will be ignored in the agenda view.
+2. Permanently move the item to archive by pressing =C-c C-x C-a=.
+
+Number 2 will move the item into a =.org_archive= file, which will not be
+displayed in the org agenda.
+
+To toggle the display of all the archived files in org agenda, press
+=C-c a n v a=. Take note that =DONE= archived items will not be shown, you would
+need to press =C-c a t= then select =DONE= then =r=.
+
+** Recurring Agenda, Routine and Habit items
+
+Recurring, Routine and Habit items are repeating scheduled items that will
+appear in the agenda view. The capture menu has a pre-defined schedule value.
+
+| Type             | Description                        | Initial State       | Pre-defined schedules | File                 |
+|------------------+------------------------------------+---------------------+-----------------------+----------------------|
+| Recurring Agenda | Meeting schedules                  | PHONE/MEETING/VIDEO | Every day             | agenda.org/Recurring |
+| Routine          | Tasks that needs to do repeatedly  | TODO/NEXT           | Every day             | projects.org/Routine |
+| Habit            | Repeated tasks with a visual graph | TODO                | 2 to 4 days           | projects.org/Habit   |
+
+Habit tasks will begin counting on the start date, and on completion, =DONE=
+habits will switch back to =TODO=, logging the time it is switched to =DONE=
+to the =LOGBOOK= drawer.
+
+** Refiling
+
+Items can be refiled to and from the agenda files. To refile an item press
+=C-c C-w=. This configuration can refile to an org agenda file with a parent
+heading at the same time. If the heading does not exist, it will be created.

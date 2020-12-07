@@ -1,5 +1,8 @@
 (require 'org)
 
+;; Modules
+(setq org-modules (append org-modules '(org-habit)))
+
 ;; Directories and Files
 
 ;; org directory
@@ -41,18 +44,29 @@
    "%s"
    (pcase
        (plist-get org-capture-plist :capture-template)
-     ("inbox" "* %^{Item Type|TODO|NEXT|WAITING|HOLD} %?\n
+     ("inbox" "* %^{Item Type|TODO|NEXT|DOING|BLOCKED|REVIEW|DONE|ARCHIVE} %?\n
 - Entered on %U")
      ("agenda"
-      "* %^{Agenda Type|TODO|NEXT|WAITING|HOLD|PHONE|MEETING} %? :events:
-<%<%Y-%m-%d %a %H:00>>")
+      "* %^{Agenda Type|PHONE|MEETING|VIDEO|CANCELLED} %?\n<%<%Y-%m-%d %a %H:00>>")
      ("recurring"
-      "* %^{Agenda Type|TODO|NEXT|WAITING|HOLD|PHONE|MEETING} TODO %? :recurring:
-SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>")
-     ("note" "* %^{Note Type||NOTE|TITLE|REFERENCE} %?
-%U\n ")
-     ("dump" "* %^{Note Type|TITLE|SUBJECT|NOTE|REFERENCE} %?
-%U"))))
+      "* %^{Recurring Agenda Type|PHONE|MEETING|VIDEO} %?\nSCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>")
+     ("routine"
+      "* %^{Routine Type|TODO|NEXT} %?\nSCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>
+:PROPERTIES:
+:LOG_INTO_DRAWER: LOGBOOK
+:END:
+:LOGBOOK:
+:END:")
+     ("habit"
+      "* %^{Habit Type|TODO|NEXT} %?\nSCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
+:PROPERTIES:
+:STYLE:           habit
+:LOG_INTO_DRAWER: LOGBOOK
+:END:
+:LOGBOOK:
+:END:")
+     ("note" "* %^{Note Type||NOTE|TITLE|REFERENCE} %?\n%U\n ")
+     ("dump" "* %^{Note Type||NOTE|TITLE|REFERENCE} %?\n%U"))))
 
 ;; org-mode capture templates
 (setq org-capture-templates
@@ -63,22 +77,35 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>")
           :capture-template "inbox"
           :jump-to-captured t)
          ;; agenda
-         ("a" "Agenda" entry
-          (file+olp+datetree "agenda.org" "Tasks")
+         ("m" "Meeting" entry
+          (file+olp+datetree "agenda.org" "Meeting")
           #'org-custom-capture-templates
           :capture-template "agenda"
           :jump-to-captured t
           :time-prompt t)
          ;; recurring agenda
-         ("r" "Recurring Item" entry
+         ("r" "Recurring Meeting" entry
           (file+olp+datetree "agenda.org" "Recurring")
           #'org-custom-capture-templates
           :capture-template "recurring"
           :jump-to-captured t
           :time-prompt t)
+         ;; routine task
+         ("R" "Routine" entry
+          (file+olp "projects.org" "Recurring" "Routine")
+          #'org-custom-capture-templates
+          :capture-template "routine"
+          :jump-to-captured t
+          :time-prompt t)
+         ;; habit
+         ("h" "Habit" entry
+          (file+olp "projects.org" "Recurring" "Habit")
+          #'org-custom-capture-templates
+          :capture-template "habit"
+          :jump-to-captured t
+          :time-prompt t)
          ;; notes
-         ("n" "Note" entry
-          (file+headline "notes.org" "Notes")
+         ("n" "Note" entry (file "notes.org")
           #'org-custom-capture-templates
           :capture-template "note"
           :jump-to-captured t)
@@ -202,9 +229,9 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>")
 
 ;; State sequences
 (setq org-todo-keywords
-      '((sequence "TODO" "NEXT" "DOING" "BLOCKED" "REVIEW" "|" "DONE" "ARCHIVED")
+      '((sequence "TODO" "NEXT" "DOING" "BLOCKED" "REVIEW" "|" "DONE" "ARCHIVE")
         (sequence "WAITING" "|" "HOLD")
-        (sequence "PHONE" "|" "MEETING")
+        (sequence "PHONE" "MEETING" "VIDEO" "|" "CANCELLED")
         (sequence "NOTE" "|" "TITLE" "REFERENCE" "SUBJECT")))
 
 ;; For clearer view of each states
@@ -212,8 +239,9 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>")
       '(("TODO" . "royal blue")
         ("NEXT" . "purple")
         ("DOING" . "yellow")
+        ("CANCELLED", "red")
         ("BLOCKED" . "red")
         ("REVIEW" . "orange")
         ("DONE" . "green")
-        ("ARCHIVED" . "blue")
+        ("ARCHIVE" . "blue")
         ("WAITING" . "brown")))
