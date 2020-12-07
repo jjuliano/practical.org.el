@@ -1,0 +1,11 @@
+#+STARTUP: content showstars indent
+#+TAGS: @home(h) @work(w) @mail(m) @comp(c) @web(b)
+#+PROPERTY: Effort_ALL 0 0:05 0:10 0:15 0:30 0:45 1:00 2:00 4:00
+
+* Recurring                                                     :recurring:
+** Routine                                                      :routine:
+** Habit                                                        :habit:
+* One Step Tasks                                                :tasks:
+* Projects                                                      :projects:
+** Personal                                                     :personal:
+** Business                                                     :business:

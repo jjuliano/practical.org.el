@@ -18,6 +18,27 @@ There are several packages that optionally can be installed from MELPA/ELPA via
 installed, this library uses the built-in =locate-library= to check if those
 packages are installed.
 
+* Installation
+
+To install, add the following line to your =init.el= file.
+Change the org-directory and path pointing to the =practical.org.el= file.
+
+#+BEGIN_SRC lisp
+;; org directory
+(setq org-directory "~/Documents/Emacs/org")
+
+;; practical.org.el GTD+Zettelkasten workflow
+(setq practical-org-mode-el
+      (expand-file-name "/path/to/practical.org.el"))
+(load-file practical-org-mode-el)
+#+END_SRC
+
+* Included org files
+
+This workflow configuration uses a predefined parent nodes. The suggested org
+files templates are found in the =files/= directory. Just copy those files to
+your org-directory.
+
 * Features
 
 ** Org-Capture Menu

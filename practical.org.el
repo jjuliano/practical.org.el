@@ -5,9 +5,6 @@
 
 ;; Directories and Files
 
-;; org directory
-(setq org-directory "~/Documents/Emacs/org")
-
 ;; braindump directory
 (setq org-braindump-directory (expand-file-name "notes/" org-directory))
 
