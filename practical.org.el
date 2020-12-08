@@ -1,7 +1,8 @@
 (require 'org)
 
 ;; Modules
-(setq org-modules (append org-modules '(org-habit)))
+(setq org-modules (append org-modules '(org-habit
+                                        org-bbdb)))
 
 ;; Directories and Files
 
@@ -31,6 +32,8 @@
        ;; notes.org
        (expand-file-name
         org-default-notes-file)
+       ;; individual notes files
+        org-braindump-directory
        ))
 
 ;; Capture
@@ -41,30 +44,45 @@
    "%s"
    (pcase
        (plist-get org-capture-plist :capture-template)
-     ("inbox" "* %^{Item Type|TODO|NEXT|DOING|BLOCKED|REVIEW|DONE|ARCHIVE} %?\n
-- Entered on %U")
+     ("inbox" "* %^{Item Type|TODO|NEXT|DOING|BLOCKED|REVIEW|FEEDBACK|WAITING|DONE|ARCHIVE} %?
+- Entered on <%<%Y-%m-%d %a %H:00>>")
      ("agenda"
-      "* %^{Agenda Type|PHONE|MEETING|VIDEO|CANCELLED} %?\n<%<%Y-%m-%d %a %H:00>>")
+      "* %^{Agenda Type|MEETING|APPOINTMENT|CANCELLED} %?\nSCHEDULED: <%<%Y-%m-%d %a %H:00>>")
      ("recurring"
-      "* %^{Recurring Agenda Type|PHONE|MEETING|VIDEO} %?\nSCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>")
+      "* %^{Recurring Agenda Type|MEETING|APPOINTMENT} %?
+SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>
+:PROPERTIES:
+:LOG_INTO_DRAWER: LOGBOOK
+:END:
+:LOGBOOK:
+:END:")
      ("routine"
-      "* %^{Routine Type|TODO|NEXT} %?\nSCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>
+      "* %^{Routine Type|TODO|NEXT} %?
+SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>
 :PROPERTIES:
 :LOG_INTO_DRAWER: LOGBOOK
 :END:
 :LOGBOOK:
 :END:")
      ("habit"
-      "* %^{Habit Type|TODO|NEXT} %?\nSCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
+      "* %^{Habit Type|TODO|NEXT} %?
+SCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
 :PROPERTIES:
 :STYLE:           habit
 :LOG_INTO_DRAWER: LOGBOOK
 :END:
 :LOGBOOK:
 :END:")
-     ("note" "* %^{Note Type||NOTE|TITLE|REFERENCE} %?\n%U\n ")
-     ("dump" "* %^{Note Type||NOTE|TITLE|REFERENCE} %?\n%U"))))
+     ("note" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G\n<%<%Y-%m-%d %a %H:00>>")
+     ("dump" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G\n<%<%Y-%m-%d %a %H:00>>")
+     ("dumplink" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G
+:PROPERTIES:
+:COLUMNS: %(format \"%%25%s %%%s %%3%s %%%s %%%s\" \"ITEM\" \"TODO\" \"PRIORITY\" \"TAGS\" \"LOCATION\")
+:LOCATION: %l
+:END:
+<%<%Y-%m-%d %a %H:00>>"))))
 
+;; :COLUMNS: %(format \"%%25ITEM %%TODO %%3PRIORITY %%TAGS %%LOCATION\")
 ;; org-mode capture templates
 (setq org-capture-templates
       (append
@@ -111,7 +129,16 @@
           (file org-capture-note-to-file)
           #'org-custom-capture-templates
           :capture-template "dump"
-          :jump-to-captured t))
+          :jump-to-captured t)
+         ;; create a brain dump note with the current link item
+         ("N" "New brain dump on point" entry
+          (file org-capture-note-to-file)
+          #'org-custom-capture-templates
+          :capture-template "dumplink"
+          :jump-to-captured t)
+         ;; search tags
+         ("t" "Search all tags" entry
+          (file org-capture-search-tags)))
        ;; bbdb contact management
        (when (locate-library "bbdb")
          '(("C" "All contacts" entry
@@ -138,18 +165,31 @@
    'org-store-link)
   (org-capture nil "i"))
 
-
 (defun org-capture-braindump ()
   (interactive)
   (call-interactively
    'org-store-link)
   (org-capture nil "b"))
 
+(defun org-capture-braindump-at-point ()
+  (interactive)
+  (call-interactively
+   'org-store-link)
+  (org-capture nil "N"))
+
+(defun org-capture-search-tags ()
+  (interactive)
+  (call-interactively
+   'org-tags-view)
+  (org-capture nil "t"))
+
 ;; Key bindings
 (define-key global-map (kbd "C-c a") 'org-agenda)
 (define-key global-map (kbd "C-c c") 'org-capture)
 (define-key global-map (kbd "C-c i") 'org-capture-inbox)
 (define-key global-map (kbd "C-c b") 'org-capture-braindump)
+(define-key global-map (kbd "C-c N") 'org-capture-braindump-at-point)
+(define-key global-map (kbd "C-c t") 'org-capture-search-tags)
 
 ;; BBDBv3 contact management
 (cond ((locate-library "bbdb")
@@ -201,7 +241,7 @@
 (setq org-agenda-refile-targets-files
       (seq-difference
        org-agenda-files
-       '(list org-default-notes-file)))
+       (list org-default-notes-file org-braindump-directory)))
 
 ;; Refile
 
@@ -226,19 +266,31 @@
 
 ;; State sequences
 (setq org-todo-keywords
-      '((sequence "TODO" "NEXT" "DOING" "BLOCKED" "REVIEW" "|" "DONE" "ARCHIVE")
-        (sequence "WAITING" "|" "HOLD")
-        (sequence "PHONE" "MEETING" "VIDEO" "|" "CANCELLED")
-        (sequence "NOTE" "|" "TITLE" "REFERENCE" "SUBJECT")))
+      '((sequence "TODO(t)" "NEXT(n)" "DOING(o)" "|" "DONE(d)" "ARCHIVE(A)")
+        (sequence "REVIEW(r)" "|" "FEEDBACK(f)")
+        (sequence "WAITING(w)" "|" "HOLD(h)")
+        (sequence "BLOCKED(b)" "|" "CANCELLED(c)" "POSTPONED(P)" "CLOSED(C)")
+        (sequence "MEETING(m)" "|" "APPOINTMENT(a)")
+        (sequence "NOTE(n)" "|" "TITLE(t)" "REFERENCE(r)" "SUBJECT(s)")))
 
 ;; For clearer view of each states
 (setq org-todo-keyword-faces
-      '(("TODO" . "royal blue")
-        ("NEXT" . "purple")
-        ("DOING" . "yellow")
-        ("CANCELLED", "red")
-        ("BLOCKED" . "red")
-        ("REVIEW" . "orange")
-        ("DONE" . "green")
-        ("ARCHIVE" . "blue")
-        ("WAITING" . "brown")))
+      '(("TODO" . "systemTealColor")
+        ("NEXT" . "salmon")
+        ("DOING" . "gold")
+        ("DONE" . "systemIndigoColor")
+        ("CLOSED" . "systemIndigoColor")
+        ("ARCHIVE" . "systemGrayColor")
+        ("MEETING" . "systemBlueColor")
+        ("APPOINTMENT" . "systemBlueColor")
+        ("HOLD" . "HotPink")
+        ("WAITING" . "HotPink")
+        ("CANCELLED" . "systemPinkColor")
+        ("POSTPONED" . "systemPinkColor")
+        ("BLOCKED" . "systemPinkColor")
+        ("REVIEW" . "systemPurpleColor")
+        ("FEEDBACK" . "systemPurpleColor")
+        ("NOTE" . "wheat")
+        ("TITLE" . "wheat")
+        ("REFERENCE" . "wheat")
+        ("SUBJECT" . "wheat")))

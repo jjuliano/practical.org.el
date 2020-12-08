@@ -1,10 +1,11 @@
 * practical.org.el
-Practical GTD and Zettelkasten workflow system for Emacs
+Practical GTD+Zettelkasten+CMS workflow system for vanilla Emacs
 
 * Motivation
 
-I'd like to create a GTD+Zettelkasten system that is both simple and practical,
-that will caters to exactly what I need for my day-to-day tasks.
+I'd like to create a GTD+Zettelkasten workflow system with Contact management
+that is both simple and practical, and that it will caters to exactly what I
+need for my day-to-day tasks.
 
 I have explored and personally used several GTD system, and found them to be
 overly complex for my needs.
@@ -33,7 +34,7 @@ Change the org-directory and path pointing to the =practical.org.el= file.
 (load-file practical-org-mode-el)
 #+END_SRC
 
-* Included org files
+** Included org files
 
 This workflow configuration uses a predefined parent nodes. The suggested org
 files templates are found in the =files/= directory. Just copy those files to
@@ -47,72 +48,17 @@ You start by opening the capture menu. On this menu, you can select the GTD or
 Zettelkasten actions that you want to do. Here are all the actions that will be
 presented in the capture menu. Org agenda can be opened by pressing =C-c a=.
 
-| Action     | Description                          | Keystroke        |
-|------------+--------------------------------------+------------------|
-| Inbox      | Add new inbox item                   | C-c c i or C-c i |
-| Agenda     | Create new Scheduled agenda item     | C-c c a          |
-| Recurring  | Create a new recurring agenda        | C-c c r          |
-| Routine    | Create a new routine item            | C-c c R          |
-| Habit      | Create a new habit item              | C-c c h          |
-| Note       | Create a new note entry to notes.org | C-c c n          |
-| Brain dump | Create a note as a new org file      | C-c c b or C-c b |
-
-If you installed the =bbdb= version 3 package (The Insidious Big Brother
-Database), the capture menu will have additional items, namely:
-
-| Action         | Description                | Keystroke |
-|----------------+----------------------------+-----------|
-| All Contacts   | Show all contacts          | C-c c C   |
-| New Contact    | Create a new contact       | C-c c c   |
-| Search Contact | Regexp search all contacts | C-c c s   |
-
-While on =bbdb= window, you can add, remove, insert entries and copy each
-contacts. Here are the most useful =bbdb= keystrokes, note that they don't
-require the control keys to be pressed.
-
-| Action | Description          | Keystroke |
-|--------+----------------------+-----------|
-| Create | Create a new contact | c         |
-| Edit   | Edit contact         | e         |
-| Insert | Insert a line        | i         |
-| Copy   | Copy the contact     | Cr        |
-| Save   | Save the contact     | s         |
-
-** GTD workflow
-
-For most workflow, everything starts with an =inbox=. You can start your day
-with filing up the =inbox= items and refiling them into =projects= or =agenda=.
-
-Each item will be prompted for an initial state, and each item state has it's
-own progressions.
-
-Here's the table of the initial states. Changing states can be performed via
-=C-c C-t=.
-
-| Initial state       | Suggested use                               | Progressions                                      |
-|---------------------+---------------------------------------------+---------------------------------------------------|
-| TODO                | Generic item                                | TODO -> NEXT/DOING/BLOCKED/REVIEW -> DONE/ARCHIVE |
-| WAITING             | Items that has dependency on other people,  |                                                   |
-|                     | that you are waiting for other people to do | HOLD                                              |
-| PHONE/MEETING/VIDEO | Phone/Meeting/Video call agenda             | CANCELLED                                         |
-| NOTE                | Single note item or new note item           | NOTE/REFERENCE/TITLE/SUBJECT                      |
-
-** Archive items
-
-Over time, you can accumulate items that can clutter your agenda files.
-You can clear up your todo/agenda items by archiving them.
-
-There are 2 ways to archive an item.
-
-1. If you set the item tag as =ARCHIVE=, it will be ignored in the agenda view.
-2. Permanently move the item to archive by pressing =C-c C-x C-a=.
-
-Number 2 will move the item into a =.org_archive= file, which will not be
-displayed in the org agenda.
-
-To toggle the display of all the archived files in org agenda, press
-=C-c a n v a=. Take note that =DONE= archived items will not be shown, you would
-need to press =C-c a t= then select =DONE= then =r=.
+| Action              | Description                                     | Keystroke        |
+|---------------------+-------------------------------------------------+------------------|
+| Inbox               | Add new inbox item                              | C-c c i or C-c i |
+| Meeting             | Create new Scheduled meeting item               | C-c c m          |
+| Recurring           | Create a new recurring meeting item             | C-c c r          |
+| Routine             | Create a new routine item                       | C-c c R          |
+| Habit               | Create a new habit item                         | C-c c h          |
+| Note                | Create a new note entry to notes.org            | C-c c n          |
+| Brain dump          | Create a note as a new org file                 | C-c c b or C-c b |
+| Brain dump at point | Create a note as a new org file at point        | C-c c N or C-c N  |
+| Search Tags         | Search all tags including tags from notes/*.org | C-c c t or C-c t |
 
 ** Recurring Agenda, Routine and Habit items
 
@@ -129,7 +75,110 @@ Habit tasks will begin counting on the start date, and on completion, =DONE=
 habits will switch back to =TODO=, logging the time it is switched to =DONE=
 to the =LOGBOOK= drawer.
 
-** Refiling
+** Zettelkasten
+
+Zettelkasten is a note taking method where notes are grouped together with
+similar tags. The way the configuration implement Zettelkasten is using the
+built-in tags property, which will be asked each time you create a new note or a
+brain dump.
+
+To search for all the tags, press =C-c c t or C-c t=, then you can press =TAB= to
+expand all the tags from all the agenda files and =note/*.org= files. After
+selecting the tag, it will present a list of all files associated with those
+tags. To open the selected file, press =TAB=.
+
+You can also create a new brain dump note on the current point by pressing the
+=C-c c N or C-c N=, which will create a new org file, with the current buffer or
+point. The URL of the point or buffer will be stored in the =:LOCATION:= drawer
+property.
+
+** Contact Management
+
+If you installed the =bbdb= version 3 package (The Insidious Big Brother
+Database), the capture menu will have additional items, namely:
+
+| Action         | Description                | Keystroke |
+|----------------+----------------------------+-----------|
+| All Contacts   | Show all contacts          | C-c c C   |
+| New Contact    | Create a new contact       | C-c c c   |
+| Search Contact | Regexp search all contacts | C-c c s   |
+
+*** bbdb-mode keystrokes
+
+While on =bbdb= window, you can add, remove, insert entries and copy each
+contacts. Here are the most useful =bbdb= keystrokes, note that they don't
+require the control keys to be pressed.
+
+| Action | Description          | Keystroke |
+|--------+----------------------+-----------|
+| Create | Create a new contact | c         |
+| Edit   | Edit contact         | e         |
+| Insert | Insert a line        | i         |
+| Copy   | Copy the contact     | Cr        |
+| Save   | Save the contact     | s         |
+
+*** bbdb link
+
+To link to a BBDB record, just create a link in your org-files with the
+following format:
+
+#+BEGIN_SRC org
+[[bbdb:Joel Bryan Juliano]]
+#+END_SRC
+
+To visit this =bbdb= record, just type =C-c C-o=.
+
+* Workflow
+
+For most workflow, everything starts with an =inbox=. You can start your day
+with filing up the =inbox= items and refiling them into =projects= or =agenda=.
+
+Each item will be prompted for an initial state, and each item state has it's
+own progressions.
+
+Here's the table of the initial states. Changing states can be performed via
+=C-c C-t=.
+
+** GTD states
+
+| State   | Description                                      |
+|---------+--------------------------------------------------|
+| TODO    | Starting state                                   |
+| NEXT    | Next priority item to begin working              |
+| DOING   | Currently doing / Work in progress               |
+| DONE    | Mark as done (ignored in agenda view)            |
+| WAITING | Awaiting dependency task or being hold           |
+| ARCHIVE | Tag as archive the item (ignored in agenda view) |
+
+** Other states
+
+| State                              | Description                                     |
+|------------------------------------+-------------------------------------------------|
+| REVIEW/FEEDBACK                    | Item is being reviewed or awaiting feedback     |
+| BLOCKED/CANCELLED/POSTPONED/CLOSED | Item is blocked, cancelled, postponed or closed |
+|------------------------------------+-------------------------------------------------|
+| MEETING/APPOINTMENT                | Meeting or Appointment agenda                   |
+|------------------------------------+-------------------------------------------------|
+| NOTE/TITLE/REFERENCE/SUBJECT       | Note item                                       |
+
+* Archive items
+
+Over time, you can accumulate items that can clutter your agenda files.
+You can clear up your todo/agenda items by archiving them.
+
+There are 2 ways to archive an item.
+
+1. If you set the item tag as =ARCHIVE=, it will be ignored in the agenda view.
+2. Permanently move the item to archive by pressing =C-c C-x C-a=.
+
+Number 2 will move the item into a =.org_archive= file, which will not be
+displayed in the org agenda.
+
+To toggle the display of all the archived files in org agenda, press
+=C-c a n v a=. Take note that =DONE= archived items will not be shown, you would
+need to press =C-c a t= then select =DONE= then =r=.
+
+* Refiling
 
 Items can be refiled to and from the agenda files. To refile an item press
 =C-c C-w=. This configuration can refile to an org agenda file with a parent
