@@ -4,25 +4,24 @@ Practical GTD+Zettelkasten+CMS workflow system for vanilla Emacs
 * Motivation
 
 I'd like to create a GTD+Zettelkasten workflow system with Contact management
-that is both simple and practical, and that it will caters to exactly what I
-need for my day-to-day tasks.
+that is both simple and practical, and that caters to exactly what I need for my
+day-to-day tasks.
 
 I have explored and personally used several GTD system, and found them to be
 overly complex for my needs.
 
-The configuration aims to have a practical GTD system using vanilla Emacs
-without any unnecessary packages, as possible, and no package-manager handling
-magic as well other than the built-in =locate-library=.
+The configuration aims to have a practical and lightweight GTD system using only
+vanilla Emacs without any unnecessary packages to be usable.
 
-There are several packages that optionally can be installed from MELPA/ELPA via
-=M-x package-install=, however, they will only be activated when they are
-installed, this library uses the built-in =locate-library= to check if those
-packages are installed.
+Custom packages like =bbdb= are handled using only the Emacs built-in
+=locate-library= function. The packages are optional, and the configuration will
+work without them.
 
 * Installation
 
 To install, add the following line to your =init.el= file.
-Change the org-directory and path pointing to the =practical.org.el= file.
+You will need to change the org-directory depending to your liking.
+Also, specify the full path pointing to the =practical.org.el= file.
 
 #+BEGIN_SRC lisp
 ;; org directory
@@ -57,7 +56,7 @@ presented in the capture menu. Org agenda can be opened by pressing =C-c a=.
 | Habit               | Create a new habit item                         | C-c c h          |
 | Note                | Create a new note entry to notes.org            | C-c c n          |
 | Brain dump          | Create a note as a new org file                 | C-c c b or C-c b |
-| Brain dump at point | Create a note as a new org file at point        | C-c c N or C-c N  |
+| Brain dump at point | Create a note as a new org file at point        | C-c c N or C-c N |
 | Search Tags         | Search all tags including tags from notes/*.org | C-c c t or C-c t |
 
 ** Recurring Agenda, Routine and Habit items
@@ -65,11 +64,11 @@ presented in the capture menu. Org agenda can be opened by pressing =C-c a=.
 Recurring, Routine and Habit items are repeating scheduled items that will
 appear in the agenda view. The capture menu has a pre-defined schedule value.
 
-| Type             | Description                        | Initial State       | Pre-defined schedules | File                 |
-|------------------+------------------------------------+---------------------+-----------------------+----------------------|
-| Recurring Agenda | Meeting schedules                  | PHONE/MEETING/VIDEO | Every day             | agenda.org/Recurring |
-| Routine          | Tasks that needs to do repeatedly  | TODO/NEXT           | Every day             | projects.org/Routine |
-| Habit            | Repeated tasks with a visual graph | TODO                | 2 to 4 days           | projects.org/Habit   |
+| Type             | Description                        | Initial State       | Pre-defined schedules | File                           |
+|------------------+------------------------------------+---------------------+-----------------------+--------------------------------|
+| Recurring Agenda | Meeting schedules                  | PHONE/MEETING/VIDEO | Every day             | agenda.org/Recurring           |
+| Routine          | Tasks that needs to do repeatedly  | TODO/NEXT           | Every day             | projects.org/Recurring/Routine |
+| Habit            | Repeated tasks with a visual graph | TODO                | 2 to 4 days           | projects.org/Recurring/Habit   |
 
 Habit tasks will begin counting on the start date, and on completion, =DONE=
 habits will switch back to =TODO=, logging the time it is switched to =DONE=
@@ -156,9 +155,7 @@ Here's the table of the initial states. Changing states can be performed via
 |------------------------------------+-------------------------------------------------|
 | REVIEW/FEEDBACK                    | Item is being reviewed or awaiting feedback     |
 | BLOCKED/CANCELLED/POSTPONED/CLOSED | Item is blocked, cancelled, postponed or closed |
-|------------------------------------+-------------------------------------------------|
 | MEETING/APPOINTMENT                | Meeting or Appointment agenda                   |
-|------------------------------------+-------------------------------------------------|
 | NOTE/TITLE/REFERENCE/SUBJECT       | Note item                                       |
 
 * Archive items
