@@ -1,8 +1,7 @@
 (require 'org)
 
 ;; Modules
-(setq org-modules (append org-modules '(org-habit
-                                        org-bbdb)))
+(setq org-modules (append org-modules '(org-habit org-bbdb)))
 
 ;; Directories and Files
 
@@ -10,31 +9,20 @@
 (setq org-braindump-directory (expand-file-name "notes/" org-directory))
 
 ;; Default notes file
-(setq org-default-notes-file
-      (expand-file-name
-       "notes.org"
-       org-directory))
+(setq org-default-notes-file (expand-file-name "notes.org" org-directory))
 
 (setq org-agenda-files
       (list
        ;; inbox.org
-       (expand-file-name
-        "inbox.org"
-        org-directory)
+       (expand-file-name "inbox.org" org-directory)
        ;; projects.org
-       (expand-file-name
-        "projects.org"
-        org-directory)
+       (expand-file-name "projects.org" org-directory)
        ;; agenda.org
-       (expand-file-name
-        "agenda.org"
-        org-directory)
+       (expand-file-name "agenda.org" org-directory)
        ;; notes.org
-       (expand-file-name
-        org-default-notes-file)
+       (expand-file-name org-default-notes-file)
        ;; individual notes files
-        org-braindump-directory
-       ))
+       org-braindump-directory))
 
 ;; Capture
 
@@ -49,7 +37,8 @@
      ("task" "* %^{Task Type|TODO|NEXT|DOING|BLOCKED|REVIEW|FEEDBACK|WAITING|DONE|ARCHIVE} %?
 <%<%Y-%m-%d %a %H:00>>")
      ("agenda"
-      "* %^{Agenda Type|MEETING|APPOINTMENT|CANCELLED} %?\nSCHEDULED: <%<%Y-%m-%d %a %H:00>>")
+      "* %^{Agenda Type|MEETING|APPOINTMENT|CANCELLED} %?
+SCHEDULED: <%<%Y-%m-%d %a %H:00>>")
      ("recurring"
       "* %^{Recurring Agenda Type|MEETING|APPOINTMENT} %?
 SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>
@@ -75,11 +64,12 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
 :END:
 :LOGBOOK:
 :END:")
-     ("note" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G\n<%<%Y-%m-%d %a %H:00>>")
-     ("dump" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G\n<%<%Y-%m-%d %a %H:00>>")
+     ("note" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G
+<%<%Y-%m-%d %a %H:00>>")
+     ("dump" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G
+<%<%Y-%m-%d %a %H:00>>")
      ("dumplink" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G
 :PROPERTIES:
-:COLUMNS: %(format \"%%25%s %%%s %%3%s %%%s %%%s\" \"ITEM\" \"TODO\" \"PRIORITY\" \"TAGS\" \"LOCATION\")
 :LOCATION: %l
 :END:
 <%<%Y-%m-%d %a %H:00>>"))))
@@ -169,32 +159,27 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
 ;; Key shortcuts functions
 (defun org-capture-inbox ()
   (interactive)
-  (call-interactively
-   'org-store-link)
+  (call-interactively 'org-store-link)
   (org-capture nil "i"))
 
 (defun org-capture-task ()
   (interactive)
-  (call-interactively
-   'org-store-link)
+  (call-interactively 'org-store-link)
   (org-capture nil "T"))
 
 (defun org-capture-braindump ()
   (interactive)
-  (call-interactively
-   'org-store-link)
+  (call-interactively 'org-store-link)
   (org-capture nil "b"))
 
 (defun org-capture-braindump-at-point ()
   (interactive)
-  (call-interactively
-   'org-store-link)
+  (call-interactively 'org-store-link)
   (org-capture nil "N"))
 
 (defun org-capture-search-tags ()
   (interactive)
-  (call-interactively
-   'org-tags-view)
+  (call-interactively 'org-tags-view)
   (org-capture nil "t"))
 
 ;; Key bindings
@@ -227,14 +212,12 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
        ;; BBDB org-capture functions
        (defun org-capture-bbdb-show ()
          (interactive)
-         (call-interactively
-          'bbdb-display-all-records)
+         (call-interactively 'bbdb-display-all-records)
          (org-capture nil "C"))
 
        (defun org-capture-bbdb-create ()
          (interactive)
-         (call-interactively
-          'bbdb-create)
+         (call-interactively 'bbdb-create)
          (org-capture nil "c"))
 
        (defun org-capture-bbdb-search ()
@@ -248,15 +231,15 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
 (setq org-log-done 'time)
 
 ;; Use full window for org-capture
-(add-hook
- 'org-capture-mode-hook
- 'delete-other-windows)
+(add-hook 'org-capture-mode-hook 'delete-other-windows)
 
 ;; List of all org-files for refiling
 (setq org-agenda-refile-targets-files
       (seq-difference
        org-agenda-files
-       (list org-default-notes-file org-braindump-directory)))
+       (list
+        org-default-notes-file
+        org-braindump-directory)))
 
 ;; Refile
 

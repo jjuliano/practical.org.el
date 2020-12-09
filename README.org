@@ -3,19 +3,23 @@ Practical GTD+Zettelkasten+CMS workflow system for vanilla Emacs
 
 * Motivation
 
-I'd like to create a GTD+Zettelkasten workflow system with Contact management
-that is both simple and practical, and that caters to exactly what I need for my
-day-to-day tasks.
+I'd like to create a GTD+Zettelkasten workflow system that is lightweight,
+simple and practical, using only vanilla Emacs and that caters to exactly what I
+need for my day-to-day tasks.
 
 I have explored and personally used several GTD system, and found them to be
 overly complex for my needs.
 
-The configuration aims to have a practical and lightweight GTD system using only
+The workflow configuration aims to have a practical GTD system using only
 vanilla Emacs without any unnecessary packages to be usable.
 
-Custom packages like =bbdb= are handled using only the Emacs built-in
-=locate-library= function. The packages are optional, and the configuration will
-work without them.
+In addition to GTD workflow, the setup also includes Zettelkasten, Contact
+Management and Habit Management systems out-of-the box.
+
+There is one custom package that can be installed via MELPA/ELPA to support
+CMS which is the =bbdb= v3 package. The packages are optional, and the
+configuration will work without it and the CMS menus in the org-capture
+menu will not appear.
 
 * Installation
 
@@ -141,6 +145,11 @@ Here's the table of the initial states. Changing states can be performed via
 
 ** GTD states
 
+Inbox items starts with a =TODO=, then each states can be toggled to =NEXT=,
+=DOING= and =DONE=. Toggle the task to =WAITING= if the task is awaiting
+dependency, or =ARCHIVE= to completely hide it from agenda view,
+see [[Archive items]] for more information on archiving.
+
 | State   | Description                                      |
 |---------+--------------------------------------------------|
 | TODO    | Starting state                                   |
@@ -151,6 +160,9 @@ Here's the table of the initial states. Changing states can be performed via
 | ARCHIVE | Tag as archive the item (ignored in agenda view) |
 
 ** Other states
+
+Other states are useful to provide more information about the task. Additional
+metadata and properties will be added If it is created via org-capture =C-c c=.
 
 | State                              | Description                                     |
 |------------------------------------+-------------------------------------------------|
@@ -181,3 +193,58 @@ need to press =C-c a t= then select =DONE= then =r=.
 Items can be refiled to and from the agenda files. To refile an item press
 =C-c C-w=. This configuration can refile to an org agenda file with a parent
 heading at the same time. If the heading does not exist, it will be created.
+
+* Scheduling, Prioritization, Context and Time management
+
+There are variety of ways to provide more information on an item, such as it's
+prioritization, schedule, context, time spent and effort on an item.
+
+This section, we'll discuss how to set priority, context, estimated efforts and
+keep a record on time spent on an item.
+
+** Prioritization
+
+Items can be prioritized by pressing =C-c ,=, or =S-<up>/<down>=, the priority
+will appear next to the item name for example =* TODO [#A] Study for Exam=,
+where the priority is displayed as =[#A]=, =[#B]= or =[#C]=, where =[#A]= is the
+highest.
+
+** Estimated Effort
+
+Effort estimation helps with planning the required time to perform the
+task. With estimated effort, it will give you an idea what is the initial
+perceived time to consume on an item.
+
+To estimate the effort on an item, press =C-c C-x e=, which will present a
+prompt to ask about the estimated time on the item. There are predefined effort
+on each org agenda files. Press =<TAB>= to display all
+the predefined time.
+
+** Context
+
+Like Tags, items can have context that will help you get more information where
+those items are associated. By GTD convention, context is a tag that starts with
+an =@=. There are predefined contexts per each org agenda files, such as
+=@home=, =@work=, =@mail=, =@comp= and =@web=. You can add additional contexts
+by modifying the =#+TAGS:= line on top of each agenda file.
+
+To add a context on an item, press =C-c C-c=, then select the context of the
+item, which will be added to the item's existing tags.
+
+** Scheduling, Deadlines and Time Management
+
+Items can be scheduled to a date or with a time which will appear significantly
+in the agenda view as =Scheduled:=. To schedule an item, press =C-c C-s=.
+
+You can also set a deadline on an item by pressing =C-c C-d=, which will display
+a =Deadline:= line in the agenda view.
+
+Those information presented in the agenda view will help you plan, focus and
+prioritize on the item.
+
+Another time management feature that you add to the item is using the =Clock
+in/out= functionality, which can give your item more information on how much
+time did you spend on it. =Clocked in= items are highlighted in the agenda
+view and will disappear when =Clocked out=. To clock-in or out the item,
+press =C-c C-x C-i= and =C-c C-x C-i=. Times and it's sum will be logged in the
+=LOGBOOK= drawer.
