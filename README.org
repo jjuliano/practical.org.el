@@ -17,8 +17,8 @@ In addition to GTD workflow, the setup also includes Zettelkasten, Contact
 Management and Habit Management systems out-of-the box.
 
 There is one custom package that can be installed via MELPA/ELPA to support
-CMS which is the =bbdb= v3 package. The packages are optional, and the
-configuration will work without it and the CMS menus in the org-capture
+CMS which is the =bbdb= v3 package. The package are optional, and the
+configuration will work without it but the CMS menus in the org-capture
 menu will not appear.
 
 * Installation
