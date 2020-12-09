@@ -47,28 +47,29 @@ You start by opening the capture menu. On this menu, you can select the GTD or
 Zettelkasten actions that you want to do. Here are all the actions that will be
 presented in the capture menu. Org agenda can be opened by pressing =C-c a=.
 
-| Action              | Description                                     | Keystroke        |
-|---------------------+-------------------------------------------------+------------------|
-| Inbox               | Add new inbox item                              | C-c c i or C-c i |
-| Meeting             | Create new Scheduled meeting item               | C-c c m          |
-| Recurring           | Create a new recurring meeting item             | C-c c r          |
-| Routine             | Create a new routine item                       | C-c c R          |
-| Habit               | Create a new habit item                         | C-c c h          |
-| Note                | Create a new note entry to notes.org            | C-c c n          |
-| Brain dump          | Create a note as a new org file                 | C-c c b or C-c b |
-| Brain dump at point | Create a note as a new org file at point        | C-c c N or C-c N |
-| Search Tags         | Search all tags including tags from notes/*.org | C-c c t or C-c t |
+| Action              | Description                                     | File                           | Keystroke        |
+|---------------------+-------------------------------------------------+--------------------------------+------------------|
+| Inbox               | Add new inbox item                              | inbox.org                      | C-c c i or C-c i |
+| One Step Task       | Create a single step task                       | projects.org/One Step Tasks    | C-c c T or C-c T |
+| Meeting             | Create new Scheduled meeting item               | agenda.org/Recurring           | C-c c m          |
+| Recurring Meeting   | Create a new recurring meeting item             | agenda.org/Meeting             | C-c c r          |
+| Routine             | Create a new routine item                       | projects.org/Recurring/Routine | C-c c R          |
+| Habit               | Create a new habit item                         | projects.org/Recurring/Habit   | C-c c h          |
+| Note                | Create a new note entry to notes.org            | notes.org                      | C-c c n          |
+| Brain dump          | Create a note as a new org file                 | notes/<file>.org               | C-c c b or C-c b |
+| Brain dump at point | Create a note as a new org file at point        | notes/<file>.org               | C-c c N or C-c N |
+| Search Tags         | Search all tags including tags from notes/*.org |                                | C-c c t or C-c t |
 
 ** Recurring Agenda, Routine and Habit items
 
 Recurring, Routine and Habit items are repeating scheduled items that will
 appear in the agenda view. The capture menu has a pre-defined schedule value.
 
-| Type             | Description                        | Initial State       | Pre-defined schedules | File                           |
-|------------------+------------------------------------+---------------------+-----------------------+--------------------------------|
-| Recurring Agenda | Meeting schedules                  | PHONE/MEETING/VIDEO | Every day             | agenda.org/Recurring           |
-| Routine          | Tasks that needs to do repeatedly  | TODO/NEXT           | Every day             | projects.org/Recurring/Routine |
-| Habit            | Repeated tasks with a visual graph | TODO                | 2 to 4 days           | projects.org/Recurring/Habit   |
+| Type              | Description                        | Initial State                 | Pre-defined schedules | File                           |
+|-------------------+------------------------------------+-------------------------------+-----------------------+--------------------------------|
+| Recurring Meeting | Meeting schedules                  | MEETING/APPOINTMENT/CANCELLED | Every day             | agenda.org/Recurring           |
+| Routine           | Tasks that needs to do repeatedly  | TODO/NEXT                     | Every day             | projects.org/Recurring/Routine |
+| Habit             | Repeated tasks with a visual graph | TODO                          | 2 to 4 days           | projects.org/Recurring/Habit   |
 
 Habit tasks will begin counting on the start date, and on completion, =DONE=
 habits will switch back to =TODO=, logging the time it is switched to =DONE=

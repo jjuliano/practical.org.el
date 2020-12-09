@@ -45,7 +45,9 @@
    (pcase
        (plist-get org-capture-plist :capture-template)
      ("inbox" "* %^{Item Type|TODO|NEXT|DOING|BLOCKED|REVIEW|FEEDBACK|WAITING|DONE|ARCHIVE} %?
-- Entered on <%<%Y-%m-%d %a %H:00>>")
+<%<%Y-%m-%d %a %H:00>>")
+     ("task" "* %^{Task Type|TODO|NEXT|DOING|BLOCKED|REVIEW|FEEDBACK|WAITING|DONE|ARCHIVE} %?
+<%<%Y-%m-%d %a %H:00>>")
      ("agenda"
       "* %^{Agenda Type|MEETING|APPOINTMENT|CANCELLED} %?\nSCHEDULED: <%<%Y-%m-%d %a %H:00>>")
      ("recurring"
@@ -90,6 +92,12 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
          ("i" "Inbox" entry (file "inbox.org")
           #'org-custom-capture-templates
           :capture-template "inbox"
+          :jump-to-captured t)
+         ;; task
+         ("T" "One Step Task" entry
+          (file+olp "projects.org" "One Step Tasks")
+          #'org-custom-capture-templates
+          :capture-template "task"
           :jump-to-captured t)
          ;; agenda
          ("m" "Meeting" entry
@@ -165,6 +173,12 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
    'org-store-link)
   (org-capture nil "i"))
 
+(defun org-capture-task ()
+  (interactive)
+  (call-interactively
+   'org-store-link)
+  (org-capture nil "T"))
+
 (defun org-capture-braindump ()
   (interactive)
   (call-interactively
@@ -187,6 +201,7 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
 (define-key global-map (kbd "C-c a") 'org-agenda)
 (define-key global-map (kbd "C-c c") 'org-capture)
 (define-key global-map (kbd "C-c i") 'org-capture-inbox)
+(define-key global-map (kbd "C-c T") 'org-capture-task)
 (define-key global-map (kbd "C-c b") 'org-capture-braindump)
 (define-key global-map (kbd "C-c N") 'org-capture-braindump-at-point)
 (define-key global-map (kbd "C-c t") 'org-capture-search-tags)
