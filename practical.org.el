@@ -24,6 +24,28 @@
        ;; individual notes files
        org-braindump-directory))
 
+;; Custom functions
+
+;; return the current time in 12 hours or 24 hours
+(defun org-custom-timestamp-format ()
+  (if (bound-and-true-p org-timestamp-12-hours)
+    (progn
+      (setq calendar-time-display-form '12-hours)
+      (format-time-string "%Y-%m-%d %a %l:%M %p" (current-time)))
+    (progn
+      (setq calendar-time-display-form '24-hours)
+      (format-time-string "%Y-%m-%d %a %H:00" (current-time)))))
+
+;; check if non-scheduled items should be hidden
+(defun org-custom-inbox-timestamp ()
+  (if (bound-and-true-p org-hide-all-non-scheduled-items)
+    (progn
+      (format "[%s]"
+       (org-custom-timestamp-format)))
+    (progn
+      (format "<%s>"
+       (org-custom-timestamp-format)))))
+
 ;; Capture
 
 ;; Custom capture templates
@@ -33,15 +55,15 @@
    (pcase
        (plist-get org-capture-plist :capture-template)
      ("inbox" "* %^{Item Type|TODO|NEXT|DOING|BLOCKED|REVIEW|FEEDBACK|WAITING|DONE|ARCHIVE} %?
-<%<%Y-%m-%d %a %H:00>>")
+%(org-custom-inbox-timestamp)")
      ("task" "* %^{Task Type|TODO|NEXT|DOING|BLOCKED|REVIEW|FEEDBACK|WAITING|DONE|ARCHIVE} %?
-<%<%Y-%m-%d %a %H:00>>")
+%(org-custom-inbox-timestamp)")
      ("agenda"
       "* %^{Agenda Type|MEETING|APPOINTMENT|CANCELLED} %?
-SCHEDULED: <%<%Y-%m-%d %a %H:00>>")
+SCHEDULED: <%(org-custom-timestamp-format)>")
      ("recurring"
       "* %^{Recurring Agenda Type|MEETING|APPOINTMENT} %?
-SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>
+SCHEDULED: <%(org-custom-timestamp-format) +1d>
 :PROPERTIES:
 :LOG_INTO_DRAWER: LOGBOOK
 :END:
@@ -49,7 +71,7 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>
 :END:")
      ("routine"
       "* %^{Routine Type|TODO|NEXT} %?
-SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>
+SCHEDULED: <%(org-custom-timestamp-format) +1d>
 :PROPERTIES:
 :LOG_INTO_DRAWER: LOGBOOK
 :END:
@@ -57,7 +79,7 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 +1d>>
 :END:")
      ("habit"
       "* %^{Habit Type|TODO|NEXT} %?
-SCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
+SCHEDULED: <%(org-custom-timestamp-format) .+2d/4d>
 :PROPERTIES:
 :STYLE:           habit
 :LOG_INTO_DRAWER: LOGBOOK
@@ -65,14 +87,14 @@ SCHEDULED: <%<%Y-%m-%d %a %H:00 .+2d/4d>>
 :LOGBOOK:
 :END:")
      ("note" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G
-<%<%Y-%m-%d %a %H:00>>")
+%(org-custom-inbox-timestamp)")
      ("dump" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G
-<%<%Y-%m-%d %a %H:00>>")
+%(org-custom-inbox-timestamp)")
      ("dumplink" "* %^{Note Type||NOTE|TITLE|REFERENCE|SUBJECT} %?\t\t%^G
 :PROPERTIES:
 :LOCATION: %l
 :END:
-<%<%Y-%m-%d %a %H:00>>"))))
+%(org-custom-inbox-timestamp)"))))
 
 ;; :COLUMNS: %(format \"%%25ITEM %%TODO %%3PRIORITY %%TAGS %%LOCATION\")
 ;; org-mode capture templates

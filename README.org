@@ -31,6 +31,12 @@ Also, specify the full path pointing to the =practical.org.el= file.
 ;; org directory
 (setq org-directory "~/Documents/Emacs/org")
 
+;; 12 hours format
+(setq org-timestamp-12-hours t)
+
+;; hide all non scheduled items from agenda view
+(setq org-hide-all-non-scheduled-items t)
+
 ;; practical.org.el GTD+Zettelkasten workflow
 (setq practical-org-mode-el
       (expand-file-name "/path/to/practical.org.el"))
@@ -42,6 +48,40 @@ Also, specify the full path pointing to the =practical.org.el= file.
 This workflow configuration uses a predefined parent nodes. The suggested org
 files templates are found in the =files/= directory. Just copy those files to
 your org-directory.
+
+* Settings
+
+There are several variables settings that you can change the behaviour of this
+configuration. They are the =org-timestamp-12-hours= and
+=org-hide-all-non-scheduled-items=.
+
+** 12 hours or 24 hours time format
+
+To choose the timestamp format that will be used in your org-agenda-files, you
+can define the =org-timestamp-12-hours= variable. A value of =t= will set the
+current timestamp to use the American style, otherwise, set to =nil= or do not
+define the variable to set to European time format.
+
+#+BEGIN_SRC lisp
+;; Setting this variable to 't' will use the American style (12-hour) timestamp,
+;; otherwise if you did not define the variable or set the value to 'nil', it
+;; will use the default European (24-hour) timestamp.
+(setq org-timestamp-12-hours t)
+#+END_SRC
+
+** Hide all non-scheduled items in Agenda view
+
+The default behavior is all non-scheduled items such as =inbox=, and  =notes=,
+will be shown in the Agenda view. This allows you to see all the items
+created on that particular timestamp. To hide all the non-scheduled items in
+agenda view, set the =org-hide-all-non-scheduled-items= to =t=.
+
+#+BEGIN_SRC lisp
+;; Setting this variable to 't' will hide all the non-scheduled items such as
+;; 'inbox' and 'notes'. If you did not define the variable, or set the value of
+;; this variable to 'nil', it will show all items in the Agenda view.
+(setq org-hide-all-non-scheduled-items t)
+#+END_SRC
 
 * Features
 
