@@ -37,6 +37,9 @@ Also, specify the full path pointing to the =practical.org.el= file.
 ;; hide all non scheduled items from agenda view
 (setq org-hide-all-non-scheduled-items t)
 
+;; don's source the tags/context from the context.txt file
+(setq org-disable-context-file t)
+
 ;; practical.org.el GTD+Zettelkasten workflow
 (setq practical-org-mode-el
       (expand-file-name "/path/to/practical.org.el"))
@@ -49,10 +52,13 @@ This workflow configuration uses a predefined parent nodes. The suggested org
 files templates are found in the =files/= directory. Just copy those files to
 your org-directory.
 
+In addition to the org-files, a =context.txt= file can also be found which
+contains all the system-wide tags and context that you can use in the org file.
+
 * Settings
 
 There are several variables settings that you can change the behaviour of this
-configuration. They are the =org-timestamp-12-hours= and
+configuration. They are the =org-timestamp-12-hours=, =org-disable-context-file= and
 =org-hide-all-non-scheduled-items=.
 
 ** 12 hours or 24 hours time format
@@ -83,6 +89,20 @@ agenda view, set the =org-hide-all-non-scheduled-items= to =t=.
 (setq org-hide-all-non-scheduled-items t)
 #+END_SRC
 
+** Use context file
+
+You can add/remove/edit context and tags in a =context.txt= file. This file will
+be sourced to contain all the additional context/tags that you can use in your
+org entries. To disable this feature, set the =org-disable-context-file=, or
+don't create the =context.txt= file.
+
+#+BEGIN_SRC lisp
+;; Setting this variable to 't' will disable sourcing all the context/tags from
+;; the context file. If you did not create this file, or set the value of
+;; this variable to 't', it will use the tags defined on per-file basis
+(setq org-disable-context-file t)
+#+END_SRC
+
 * Features
 
 ** Org-Capture Menu
@@ -103,6 +123,7 @@ presented in the capture menu. Org agenda can be opened by pressing =C-c a=.
 | Brain dump          | Create a note as a new org file                 | notes/<file>.org               | C-c c b or C-c b |
 | Brain dump at point | Create a note as a new org file at point        | notes/<file>.org               | C-c c N or C-c N |
 | Search Tags         | Search all tags including tags from notes/*.org |                                | C-c c t or C-c t |
+| Edit context file   | Add/Remove/Edit context or tags                 | context.txt                    | C-c c E or C-c E |
 
 ** Recurring Agenda, Routine and Habit items
 
@@ -267,6 +288,11 @@ those items are associated. By GTD convention, context is a tag that starts with
 an =@=. There are predefined contexts per each org agenda files, such as
 =@home=, =@work=, =@mail=, =@comp= and =@web=. You can add additional contexts
 by modifying the =#+TAGS:= line on top of each agenda file.
+
+If you have a =context.txt= file in your org-directory, it will source this file
+instead. There is a capture menu item that edit this file. To edit this file,
+press =C-c c E or C-c E=. See the sample =context.txt= file in the =files/=
+directory.
 
 To add a context on an item, press =C-c C-c=, then select the context of the
 item, which will be added to the item's existing tags.

@@ -24,6 +24,9 @@
        ;; individual notes files
        org-braindump-directory))
 
+;; Defaults context file
+(setq org-default-context-file (expand-file-name "context.txt" org-directory))
+
 ;; Custom functions
 
 ;; return the current time in 12 hours or 24 hours
@@ -45,6 +48,21 @@
     (progn
       (format "<%s>"
        (org-custom-timestamp-format)))))
+
+;; source all the custom TAGS from a context file
+(defun org-build-context-from-file ()
+   (dolist (p (split-string (with-temp-buffer
+                             (insert-file-contents org-default-context-file)
+                             (buffer-substring-no-properties
+                              (point-min)
+                              (point-max))) "\n" t))
+      (push (list p) org-tag-alist)))
+
+;; load the default context file if exists
+(if (file-exists-p org-default-context-file)
+    (if (not (bound-and-true-p org-disable-context-file))
+        (progn
+          (org-build-context-from-file))))
 
 ;; Capture
 
@@ -159,6 +177,12 @@ SCHEDULED: <%(org-custom-timestamp-format) .+2d/4d>
          ;; search tags
          ("t" "Search all tags" entry
           (file org-capture-search-tags)))
+       ;; context file
+       (when (file-exists-p org-default-context-file)
+         (if (not (bound-and-true-p org-disable-context-file))
+           '(("E" "Edit contexts/tags" entry
+              (file org-capture-edit-context-file))
+            )))
        ;; bbdb contact management
        (when (locate-library "bbdb")
          '(("C" "All contacts" entry
@@ -167,7 +191,8 @@ SCHEDULED: <%(org-custom-timestamp-format) .+2d/4d>
             (file org-capture-bbdb-create))
            ("s" "Search contacts" entry
             (file org-capture-bbdb-search))
-           ))))
+           ))
+       ))
 
 ;; Capture notes to a new org file
 (defun org-capture-note-to-file ()
@@ -177,6 +202,13 @@ SCHEDULED: <%(org-custom-timestamp-format) .+2d/4d>
     (expand-file-name
      (format "%s.org" name)
      org-braindump-directory)))
+
+;; Edit the context file
+(defun org-capture-edit-context-file ()
+  "Edit the context file"
+  (interactive)
+    (find-file (expand-file-name
+     (format "%s" org-default-context-file))))
 
 ;; Key shortcuts functions
 (defun org-capture-inbox ()
@@ -204,6 +236,11 @@ SCHEDULED: <%(org-custom-timestamp-format) .+2d/4d>
   (call-interactively 'org-tags-view)
   (org-capture nil "t"))
 
+(defun org-capture-edit-context ()
+  (interactive)
+  (call-interactively 'org-capture-edit-context-file)
+  (org-capture nil "E"))
+
 ;; Key bindings
 (define-key global-map (kbd "C-c a") 'org-agenda)
 (define-key global-map (kbd "C-c c") 'org-capture)
@@ -212,6 +249,7 @@ SCHEDULED: <%(org-custom-timestamp-format) .+2d/4d>
 (define-key global-map (kbd "C-c b") 'org-capture-braindump)
 (define-key global-map (kbd "C-c N") 'org-capture-braindump-at-point)
 (define-key global-map (kbd "C-c t") 'org-capture-search-tags)
+(define-key global-map (kbd "C-c E") 'org-capture-edit-context)
 
 ;; BBDBv3 contact management
 (cond ((locate-library "bbdb")

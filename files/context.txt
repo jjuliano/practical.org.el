@@ -1,0 +1,9 @@
+@home
+@work
+@mail
+@comp
+@web
+@errands
+@calls
+@grocery
+@phone
