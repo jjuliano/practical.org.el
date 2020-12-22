@@ -49,6 +49,26 @@
       (format "<%s>"
        (org-custom-timestamp-format)))))
 
+;; return the current time in 12 hours or 24 hours for date/time prompt
+(defun org-custom-timestamp-prompt-format ()
+  (if (bound-and-true-p org-timestamp-12-hours)
+    (progn
+      (setq calendar-time-display-form '12-hours)
+      (format-time-string "%Y-%m-%d %a %l:%M %p" (org-time-string-to-time (org-read-date nil nil org-read-date-final-answer))))
+    (progn
+      (setq calendar-time-display-form '24-hours)
+      (format-time-string "%Y-%m-%d %a %H:00" (org-time-string-to-time (org-read-date nil nil org-read-date-final-answer))))))
+
+;; check if non-scheduled items should be hidden for date/time prompt
+(defun org-custom-inbox-prompt-timestamp ()
+  (if (bound-and-true-p org-hide-all-non-scheduled-items)
+    (progn
+      (format "[%s]"
+       (org-custom-timestamp-prompt-format)))
+    (progn
+      (format "<%s>"
+       (org-custom-timestamp-prompt-format)))))
+
 ;; source all the custom TAGS from a context file
 (defun org-build-context-from-file ()
    (dolist (p (split-string (with-temp-buffer
@@ -78,18 +98,22 @@
 %(org-custom-inbox-timestamp)")
      ("agenda"
       "* %^{Agenda Type|MEETING|APPOINTMENT|CANCELLED} %?
-SCHEDULED: <%(org-custom-timestamp-format)>")
+SCHEDULED: <%(org-custom-timestamp-prompt-format)>
+:PROPERTIES:
+:LOCATION: %^{Address/Location/BBDB Contact}
+:END:")
      ("recurring"
       "* %^{Recurring Agenda Type|MEETING|APPOINTMENT} %?
-SCHEDULED: <%(org-custom-timestamp-format) +1d>
+SCHEDULED: <%(org-custom-timestamp-prompt-format) +1d>
 :PROPERTIES:
+:LOCATION: %^{Address/Location/BBDB Contact}
 :LOG_INTO_DRAWER: LOGBOOK
 :END:
 :LOGBOOK:
 :END:")
      ("routine"
       "* %^{Routine Type|TODO|NEXT} %?
-SCHEDULED: <%(org-custom-timestamp-format) +1d>
+SCHEDULED: <%(org-custom-timestamp-prompt-format) +1d>
 :PROPERTIES:
 :LOG_INTO_DRAWER: LOGBOOK
 :END:
@@ -97,7 +121,7 @@ SCHEDULED: <%(org-custom-timestamp-format) +1d>
 :END:")
      ("habit"
       "* %^{Habit Type|TODO|NEXT} %?
-SCHEDULED: <%(org-custom-timestamp-format) .+2d/4d>
+SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
 :PROPERTIES:
 :STYLE:           habit
 :LOG_INTO_DRAWER: LOGBOOK
@@ -145,14 +169,14 @@ SCHEDULED: <%(org-custom-timestamp-format) .+2d/4d>
           :time-prompt t)
          ;; routine task
          ("R" "Routine" entry
-          (file+olp "projects.org" "Recurring" "Routine")
+          (file+olp+datetree "projects.org" "Recurring" "Routine")
           #'org-custom-capture-templates
           :capture-template "routine"
           :jump-to-captured t
           :time-prompt t)
          ;; habit
          ("h" "Habit" entry
-          (file+olp "projects.org" "Recurring" "Habit")
+          (file+olp+datetree "projects.org" "Recurring" "Habit")
           #'org-custom-capture-templates
           :capture-template "habit"
           :jump-to-captured t
