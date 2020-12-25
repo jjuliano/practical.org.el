@@ -84,6 +84,29 @@
         (progn
           (org-build-context-from-file))))
 
+;; setup org-mobile idle timer
+(if (bound-and-true-p org-mobile-directory)
+    (progn
+      ;; mobile sync
+      (defvar org-mobile-sync-timer nil)
+      (defvar org-mobile-sync-idle-secs (* 60 5))
+      (defun org-mobile-sync ()
+        (interactive)
+        (org-mobile-pull)
+        (org-mobile-push))
+      (defun org-mobile-sync-enable ()
+        "enable mobile org idle sync"
+        (interactive)
+        (setq org-mobile-sync-timer
+              (run-with-idle-timer org-mobile-sync-idle-secs t 'org-mobile-sync)))
+                                        ;
+      (defun org-mobile-sync-disable ()
+        "disable mobile org idle sync"
+        (interactive)
+        (cancel-timer
+         org-mobile-sync-timer))
+      (org-mobile-sync-enable)))
+
 ;; Capture
 
 ;; Custom capture templates
