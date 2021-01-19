@@ -174,21 +174,20 @@ If your achievement goal is to "Loose weight", then your habit item will have a
 title of "Jogging 30 mins a day", scheduled "every 7AM" in the morning, with a
 location of "At the park".
 
-**** Reflection Habit
+**** Refinement Habit
 
-You might also want to create a reflection habit, which you can create with a
-tag =REFLECTION= habit type. Reflection habit allows you to think of the 3 R's
-of your goals, to Revise, Recommit or Remove your goal. Reflection goals allows
-you to evaluate your goals, and see and adjust it to fit you.
+You might also want to create a refinement habit, which you can create with a
+tag =REFINEMENT= habit type. Refinement habit allows you to re-evaluate your
+goals, and see and adjust it to fit you.
 
 **** Missing a Streak
 
 It is important to keep a streak of your habits in a consecutive intervals,
 however, there are instances that you might miss your goals. Missed goals have a
 visual graph highlighted in RED. Keep a positive hopeful attitude when you
-missed your goals so you can go back to it again with determination. With a
-reflection habit, you can re-evaluate this goal so that it "works for you"
-instead of "against you".
+missed your goals so you can go back to it again with determination, be
+reasonable about it. With a recurring refinement habit, you can re-evaluate all
+your goals so that they "works for you" instead of "against you".
 
 ** Zettelkasten
 

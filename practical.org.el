@@ -143,10 +143,11 @@ SCHEDULED: <%(org-custom-timestamp-prompt-format) +1d>
 :LOGBOOK:
 :END:")
      ("habit"
-      "* %^{Habit Type|HABIT|GOAL|REFLECTION|TODO|NEXT} %?
+      "* %^{Habit Type|HABIT|GOAL|REFINEMENT|TODO|NEXT} %?
 SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
 :PROPERTIES:
 :STYLE:           habit
+:LOCATION: %^{Where}
 :LOG_INTO_DRAWER: LOGBOOK
 :END:
 :LOGBOOK:
@@ -376,7 +377,7 @@ SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
         (sequence "WAITING(w)" "|" "HOLD(h)")
         (sequence "BLOCKED(b)" "|" "CANCELLED(c)" "POSTPONED(P)" "CLOSED(C)")
         (sequence "MEETING(m)" "|" "APPOINTMENT(a)")
-        (sequence "HABIT(H)" "|" "GOAL(v)" "REFLECTION(O)")
+        (sequence "HABIT(H)" "|" "GOAL(v)" "REFINEMENT(O)")
         (sequence "NOTE(n)" "|" "TITLE(t)" "REFERENCE(R)" "SUBJECT(s)")))
 
 ;; For clearer view of each states
@@ -386,7 +387,7 @@ SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
         ("DOING" . "gold")
         ("HABIT" . "gold")
         ("GOAL" . "gold")
-        ("REFLECTION" . "gold")
+        ("REFINEMENT" . "gold")
         ("DONE" . "systemIndigoColor")
         ("CLOSED" . "systemIndigoColor")
         ("ARCHIVE" . "systemGrayColor")
