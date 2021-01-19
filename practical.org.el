@@ -143,7 +143,7 @@ SCHEDULED: <%(org-custom-timestamp-prompt-format) +1d>
 :LOGBOOK:
 :END:")
      ("habit"
-      "* %^{Habit Type|HABIT|GOAL|REFINEMENT|TODO|NEXT} %?
+      "* %^{Habit Type|HABIT|GOAL|REFINEMENT|TODO|NEXT} %^{What}
 SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
 :PROPERTIES:
 :STYLE:           habit
