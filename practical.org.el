@@ -143,7 +143,7 @@ SCHEDULED: <%(org-custom-timestamp-prompt-format) +1d>
 :LOGBOOK:
 :END:")
      ("habit"
-      "* %^{Habit Type|TODO|NEXT} %?
+      "* %^{Habit Type|HABIT|GOAL|REFLECTION|TODO|NEXT} %?
 SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
 :PROPERTIES:
 :STYLE:           habit
@@ -376,13 +376,17 @@ SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
         (sequence "WAITING(w)" "|" "HOLD(h)")
         (sequence "BLOCKED(b)" "|" "CANCELLED(c)" "POSTPONED(P)" "CLOSED(C)")
         (sequence "MEETING(m)" "|" "APPOINTMENT(a)")
-        (sequence "NOTE(n)" "|" "TITLE(t)" "REFERENCE(r)" "SUBJECT(s)")))
+        (sequence "HABIT(H)" "|" "GOAL(v)" "REFLECTION(O)")
+        (sequence "NOTE(n)" "|" "TITLE(t)" "REFERENCE(R)" "SUBJECT(s)")))
 
 ;; For clearer view of each states
 (setq org-todo-keyword-faces
       '(("TODO" . "systemTealColor")
         ("NEXT" . "salmon")
         ("DOING" . "gold")
+        ("HABIT" . "gold")
+        ("GOAL" . "gold")
+        ("REFLECTION" . "gold")
         ("DONE" . "systemIndigoColor")
         ("CLOSED" . "systemIndigoColor")
         ("ARCHIVE" . "systemGrayColor")

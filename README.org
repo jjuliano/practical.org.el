@@ -128,7 +128,7 @@ presented in the capture menu. Org agenda can be opened by pressing =C-c a=.
 | Search Tags         | Search all tags including tags from notes/*.org |                                | C-c c t or C-c t |
 | Edit context file   | Add/Remove/Edit context or tags                 | context.txt                    | C-c c E or C-c E |
 
-** Recurring Agenda, Routine and Habit items
+** Recurring Agenda, Routine and Habit/Goal items
 
 Recurring, Routine and Habit items are repeating scheduled items that will
 appear in the agenda view. The capture menu has a pre-defined schedule value.
@@ -137,11 +137,58 @@ appear in the agenda view. The capture menu has a pre-defined schedule value.
 |-------------------+------------------------------------+-------------------------------+-----------------------+--------------------------------|
 | Recurring Meeting | Meeting schedules                  | MEETING/APPOINTMENT/CANCELLED | Every day             | agenda.org/Recurring           |
 | Routine           | Tasks that needs to do repeatedly  | TODO/NEXT                     | Every day             | projects.org/Recurring/Routine |
-| Habit             | Repeated tasks with a visual graph | TODO                          | 2 to 4 days           | projects.org/Recurring/Habit   |
+| Habit             | Repeated tasks with a visual graph | HABIT/GOAL/REFLECTION         | 2 to 4 days           | projects.org/Recurring/Habit   |
 
 Habit tasks will begin counting on the start date, and on completion, =DONE=
 habits will switch back to =TODO=, logging the time it is switched to =DONE=
 to the =LOGBOOK= drawer.
+
+*** Habits
+
+There are two types of Habits, =Achievement Goal= and =Habit Goal=.
+
+Achievement goals are =Results-based=, while Habit goals are =Process-oriented=.
+
+You can create an achievement or an habit item, which will be tagged as either
+=GOAL= or =HABIT=.
+
+The location will also be prompted, which will serve as to where you are going
+to perform the habit. Location will be stored in the =:LOCATION:= drawer.
+
+**** Achievement Goal
+
+Achievement goals are habit items with a deadline and will be closed after a
+deadline is passed. Think of achievement goal as a one-time deal that you don't
+want to repeat.
+
+To set a deadline on a habit item, type =C-c C-d=.
+
+Achievement items can also be the resulting goal of an habit item.
+
+**** Habit Goal
+
+An important thing to remember in Habits is that you need to think of the 3 W's,
+the What, When and Where.
+
+If your achievement goal is to "Loose weight", then your habit item will have a
+title of "Jogging 30 mins a day", scheduled "every 7AM" in the morning, with a
+location of "At the park".
+
+**** Reflection Habit
+
+You might also want to create a reflection habit, which you can create with a
+tag =REFLECTION= habit type. Reflection habit allows you to think of the 3 R's
+of your goals, to Revise, Recommit or Remove your goal. Reflection goals allows
+you to evaluate your goals, and see and adjust it to fit you.
+
+**** Missing a Streak
+
+It is important to keep a streak of your habits in a consecutive intervals,
+however, there are instances that you might miss your goals. Missed goals have a
+visual graph highlighted in RED. Keep a positive hopeful attitude when you
+missed your goals so you can go back to it again with determination. With a
+reflection habit, you can re-evaluate this goal so that it "works for you"
+instead of "against you".
 
 ** Zettelkasten
 
