@@ -30,6 +30,11 @@ To install, add the following line to your =init.el= file.
 You will need to change the org-directory depending to your liking.
 Also, specify the full path pointing to the =practical.org.el= file.
 
+#+BEGIN_SRC bash
+git clone https://github.com/jjuliano/practical.org.el.git ~/.emacs.d/pkgs/practical.org.el
+cat << EOF >> ~/.emacs.d/init.el
+#+END_SRC
+
 #+BEGIN_SRC lisp
 ;; org directory
 (setq org-directory "~/Documents/Emacs/org")
@@ -48,9 +53,18 @@ Also, specify the full path pointing to the =practical.org.el= file.
 
 ;; practical.org.el GTD+Zettelkasten workflow
 (setq practical-org-mode-el
-      (expand-file-name "/path/to/practical.org.el"))
+      (expand-file-name "~/.emacs.d/pkgs/practical.org.el/practical.org.el"))
 (load-file practical-org-mode-el)
 #+END_SRC
+
+#+BEGIN_SRC bash
+EOF
+#+END_SRC
+
+Next is to copy the included files to your org-directory.
+
+#+BEGIN_SRC
+
 
 ** Included org files
 
