@@ -36,7 +36,6 @@ git clone https://github.com/jjuliano/practical.org.el.git ~/.emacs.d/pkgs/pract
 
 # Append the following lines to your init.el file
 cat << EOF >> ~/.emacs.d/init.el
-
 ;; org directory
 (setq org-directory "~/Documents/Emacs/org")
 
@@ -59,7 +58,7 @@ cat << EOF >> ~/.emacs.d/init.el
 EOF
 #+END_SRC
 
-Next is to copy the included files to your org-directory. See [[*Included org files]] for more details.
+Next, copy the included files to your org-directory. See [[#included-org-files][Included org files]] for more details.
 
 #+BEGIN_SRC bash
 # Make sure that the org directory exists
