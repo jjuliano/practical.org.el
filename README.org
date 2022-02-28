@@ -1,6 +1,8 @@
 * practical.org.el
-All-in-one pragmatic workflow system for Emacs. Includes a practical GTD system (Getting Things Done), Habit Management, Contact Management and Zettelkasten
-Topics
+All-in-one pragmatic workflow system for vanilla Emacs that just works.
+Includes a practical GTD system (Getting Things Done), Time management system,
+Habit management system, Contact management system, Zettelkasten and mobile
+app synchronization out-of-the box that just works.
 
 * Motivation
 
