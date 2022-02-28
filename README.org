@@ -1,5 +1,6 @@
 * practical.org.el
-Practical GTD+Zettelkasten+CMS workflow system for vanilla Emacs
+All-in-one pragmatic workflow system for Emacs. Includes a practical GTD system (Getting Things Done), Habit Management, Contact Management and Zettelkasten
+Topics
 
 * Motivation
 
