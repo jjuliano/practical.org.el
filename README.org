@@ -31,11 +31,12 @@ You will need to change the org-directory depending to your liking.
 Also, specify the full path pointing to the =practical.org.el= file.
 
 #+BEGIN_SRC bash
+# Clone the repository 
 git clone https://github.com/jjuliano/practical.org.el.git ~/.emacs.d/pkgs/practical.org.el
-cat << EOF >> ~/.emacs.d/init.el
-#+END_SRC
 
-#+BEGIN_SRC lisp
+# Append the following lines to your init.el file
+cat << EOF >> ~/.emacs.d/init.el
+
 ;; org directory
 (setq org-directory "~/Documents/Emacs/org")
 
@@ -55,16 +56,20 @@ cat << EOF >> ~/.emacs.d/init.el
 (setq practical-org-mode-el
       (expand-file-name "~/.emacs.d/pkgs/practical.org.el/practical.org.el"))
 (load-file practical-org-mode-el)
-#+END_SRC
-
-#+BEGIN_SRC bash
 EOF
 #+END_SRC
 
-Next is to copy the included files to your org-directory.
+Next is to copy the included files to your org-directory. See [[*Included org files]] for more details.
 
-#+BEGIN_SRC
+#+BEGIN_SRC bash
+# Make sure that the org directory exists
+mkdir -p ~/Documents/Emacs/org
 
+# Copy the files
+cp ~/.emacs.d/pkgs/practical.org.el/files/*.{txt,org} ~/Documents/Emacs/org/.
+#+END_SRC
+
+Run Emacs then press =C-c=.
 
 ** Included org files
 
