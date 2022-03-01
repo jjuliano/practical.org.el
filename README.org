@@ -59,16 +59,17 @@ EOF
 #+END_SRC
 
 Next, copy the included files to your org-directory. See [[#included-org-files][Included org files]] for more details.
+You also need to create the "notes/" directory for your Zettelkasten notes. See [[#zettelkasten][Zettelkasten]] for more details.
 
 #+BEGIN_SRC bash
-# Make sure that the org directory exists
-mkdir -p ~/Documents/Emacs/org
+# Make sure that the org directory & the zettelkasten notes directory are created
+mkdir -p ~/Documents/Emacs/org/notes
 
-# Copy the files
+# Copy the included files into the org directory
 cp ~/.emacs.d/pkgs/practical.org.el/files/*.{txt,org} ~/Documents/Emacs/org/.
 #+END_SRC
 
-Run Emacs then press =C-c=.
+Lastly, start Emacs then press =C-c=. You will be presented with the org-capture menu, and type the first letter.
 
 ** Included org files
 
