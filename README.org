@@ -72,7 +72,7 @@ cp ~/.emacs.d/pkgs/practical.org.el/files/*.{txt,org} ~/Documents/Emacs/org/.
 Then start Emacs then press =C-c=. You will be presented with the org-capture menu, and type the first letter.
 
 You might want to install the =bbdb= package for [[#contact-management][Contact Management]] feature, to do so,
-just type =M-x package-install= then type =bbdb=. Restart Emacs then you will be presented with the CMS menu.
+just type =M-x package-install= then type =bbdb=. Restart Emacs then you will be presented with the CMS menu when you press =C-c=.
 
 ** Included org files
 
