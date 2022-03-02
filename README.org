@@ -1,3 +1,7 @@
++#+CAPTION: Screenshot
++#+NAME:   fig:SCREENSHOT
++[[docs/screenshot.png]]
+
 * practical.org.el
 All-in-one pragmatic workflow system for vanilla Emacs that just works.
 Includes a practical GTD system (Getting Things Done), Time management system,
