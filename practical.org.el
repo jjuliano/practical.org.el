@@ -1,7 +1,7 @@
 (require 'org)
 
 ;; Modules
-(setq org-modules (append org-modules '(org-habit org-bbdb)))
+(setq org-modules (append org-modules '(org-habit ol-bbdb)))
 
 ;; Directories and Files
 
