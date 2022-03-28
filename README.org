@@ -233,7 +233,7 @@ tags. To open the selected file, press =TAB=.
 You can also create a new brain dump note on the current point by pressing the
 =C-c c N or C-c N=, which will create a new org file, with the current buffer or
 point. The URL of the point or buffer will be stored in the =:LOCATION:= drawer
-property.
+property, which you can visit via =C-c C-o= to visit the referring file and point.
 
 ** Contact Management
 
