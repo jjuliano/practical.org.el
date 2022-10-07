@@ -8,18 +8,23 @@
 ;; braindump directory
 (setq org-braindump-directory (expand-file-name "notes/" org-directory))
 
-;; Default notes file
+;; notes.org
 (setq org-default-notes-file (expand-file-name "notes.org" org-directory))
+
+;; inbox.org
+(setq org-default-inbox-file (expand-file-name "inbox.org" org-directory))
+
+;; projects.org
+(setq org-default-projects-file (expand-file-name "projects.org" org-directory))
+
+;; agenda.org
+(setq org-default-agenda-file (expand-file-name "agenda.org" org-directory))
 
 (setq org-agenda-files
       (list
-       ;; inbox.org
-       (expand-file-name "inbox.org" org-directory)
-       ;; projects.org
-       (expand-file-name "projects.org" org-directory)
-       ;; agenda.org
-       (expand-file-name "agenda.org" org-directory)
-       ;; notes.org
+       (expand-file-name org-default-inbox-file)
+       (expand-file-name org-default-projects-file)
+       (expand-file-name org-default-agenda-file)
        (expand-file-name org-default-notes-file)
        ;; individual notes files
        org-braindump-directory))
@@ -32,9 +37,9 @@
 ;; return the current time in 12 hours or 24 hours
 (defun org-custom-timestamp-format ()
   (if (bound-and-true-p org-timestamp-12-hours)
-    (progn
-      (setq calendar-time-display-form '12-hours)
-      (format-time-string "%Y-%m-%d %a %l:%M %p" (current-time)))
+      (progn
+        (setq calendar-time-display-form '12-hours)
+        (format-time-string "%Y-%m-%d %a %l:%M %p" (current-time)))
     (progn
       (setq calendar-time-display-form '24-hours)
       (format-time-string "%Y-%m-%d %a %H:00" (current-time)))))
@@ -42,19 +47,19 @@
 ;; check if non-scheduled items should be hidden
 (defun org-custom-inbox-timestamp ()
   (if (bound-and-true-p org-hide-all-non-scheduled-items)
-    (progn
-      (format "[%s]"
-       (org-custom-timestamp-format)))
+      (progn
+        (format "[%s]"
+                (org-custom-timestamp-format)))
     (progn
       (format "<%s>"
-       (org-custom-timestamp-format)))))
+              (org-custom-timestamp-format)))))
 
 ;; return the current time in 12 hours or 24 hours for date/time prompt
 (defun org-custom-timestamp-prompt-format ()
   (if (bound-and-true-p org-timestamp-12-hours)
-    (progn
-      (setq calendar-time-display-form '12-hours)
-      (format-time-string "%Y-%m-%d %a %l:%M %p" (org-time-string-to-time (org-read-date nil nil org-read-date-final-answer))))
+      (progn
+        (setq calendar-time-display-form '12-hours)
+        (format-time-string "%Y-%m-%d %a %l:%M %p" (org-time-string-to-time (org-read-date nil nil org-read-date-final-answer))))
     (progn
       (setq calendar-time-display-form '24-hours)
       (format-time-string "%Y-%m-%d %a %H:00" (org-time-string-to-time (org-read-date nil nil org-read-date-final-answer))))))
@@ -62,21 +67,21 @@
 ;; check if non-scheduled items should be hidden for date/time prompt
 (defun org-custom-inbox-prompt-timestamp ()
   (if (bound-and-true-p org-hide-all-non-scheduled-items)
-    (progn
-      (format "[%s]"
-       (org-custom-timestamp-prompt-format)))
+      (progn
+        (format "[%s]"
+                (org-custom-timestamp-prompt-format)))
     (progn
       (format "<%s>"
-       (org-custom-timestamp-prompt-format)))))
+              (org-custom-timestamp-prompt-format)))))
 
 ;; source all the custom TAGS from a context file
 (defun org-build-context-from-file ()
-   (dolist (p (split-string (with-temp-buffer
+  (dolist (p (split-string (with-temp-buffer
                              (insert-file-contents org-default-context-file)
                              (buffer-substring-no-properties
                               (point-min)
                               (point-max))) "\n" t))
-      (push (list p) org-tag-alist)))
+    (push (list p) org-tag-alist)))
 
 ;; load the default context file if exists
 (if (file-exists-p org-default-context-file)
@@ -166,78 +171,89 @@ SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
 ;; org-mode capture templates
 (setq org-capture-templates
       (append
-       '(;; inbox
-         ("i" "Inbox" entry (file "inbox.org")
+       '(;; show agenda
+         ("a" "Show Agenda Menu" entry
+          (file org-agenda))
+         ("I" "Show/Edit Inbox Items" entry
+          (file org-capture-edit-inbox-file))
+         ("P" "Show/Edit Projects Items" entry
+          (file org-capture-edit-projects-file))
+         ("A" "Show/Edit Agenda Items" entry
+          (file org-capture-edit-agenda-file))
+         ("o" "Show/Edit Notes" entry
+          (file org-capture-edit-notes-file))
+         ;; inbox
+         ("i" "Create a New Inbox Item" entry (file "inbox.org")
           #'org-custom-capture-templates
           :capture-template "inbox"
           :jump-to-captured t)
          ;; task
-         ("T" "One Step Task" entry
+         ("T" "Create a One Step Task" entry
           (file+olp "projects.org" "One Step Tasks")
           #'org-custom-capture-templates
           :capture-template "task"
           :jump-to-captured t)
          ;; agenda
-         ("m" "Meeting" entry
+         ("m" "Create a New Meeting" entry
           (file+olp+datetree "agenda.org" "Meeting")
           #'org-custom-capture-templates
           :capture-template "agenda"
           :jump-to-captured t
           :time-prompt t)
          ;; recurring agenda
-         ("r" "Recurring Meeting" entry
+         ("r" "Create a New Recurring Meeting" entry
           (file+olp+datetree "agenda.org" "Recurring")
           #'org-custom-capture-templates
           :capture-template "recurring"
           :jump-to-captured t
           :time-prompt t)
          ;; routine task
-         ("R" "Routine" entry
+         ("R" "Create a New Recurring Routine Task" entry
           (file+olp+datetree "projects.org" "Recurring" "Routine")
           #'org-custom-capture-templates
           :capture-template "routine"
           :jump-to-captured t
           :time-prompt t)
          ;; habit
-         ("h" "Habit" entry
+         ("h" "Create a New Recurring Habit Task" entry
           (file+olp+datetree "projects.org" "Recurring" "Habit")
           #'org-custom-capture-templates
           :capture-template "habit"
           :jump-to-captured t
           :time-prompt t)
          ;; notes
-         ("n" "Note" entry (file "notes.org")
+         ("n" "Create a New Note" entry (file "notes.org")
           #'org-custom-capture-templates
           :capture-template "note"
           :jump-to-captured t)
          ;; brain dump note
-         ("b" "New brain dump" entry
+         ("b" "Create a New Brain Dump" entry
           (file org-capture-note-to-file)
           #'org-custom-capture-templates
           :capture-template "dump"
           :jump-to-captured t)
          ;; create a brain dump note with the current link item
-         ("N" "New brain dump on point" entry
+         ("N" "Create a New Brain Dump on Point" entry
           (file org-capture-note-to-file)
           #'org-custom-capture-templates
           :capture-template "dumplink"
           :jump-to-captured t)
          ;; search tags
-         ("t" "Search all tags" entry
+         ("t" "Search All Tags" entry
           (file org-capture-search-tags)))
        ;; context file
        (when (file-exists-p org-default-context-file)
          (if (not (bound-and-true-p org-disable-context-file))
-           '(("E" "Edit contexts/tags" entry
-              (file org-capture-edit-context-file))
-            )))
+             '(("E" "Edit Contexts & Tags" entry
+                (file org-capture-edit-context-file))
+               )))
        ;; bbdb contact management
        (when (locate-library "bbdb")
-         '(("C" "All contacts" entry
+         '(("C" "Show All Contacts" entry
             (file org-capture-bbdb-show))
-           ("c" "New contact" entry
+           ("c" "Create a New Contact" entry
             (file org-capture-bbdb-create))
-           ("s" "Search contacts" entry
+           ("s" "Search All Contacts" entry
             (file org-capture-bbdb-search))
            ))
        ))
@@ -255,8 +271,32 @@ SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
 (defun org-capture-edit-context-file ()
   "Edit the context file"
   (interactive)
-    (find-file (expand-file-name
-     (format "%s" org-default-context-file))))
+  (find-file (expand-file-name
+              (format "%s" org-default-context-file))))
+
+;; Edit the inbox.org file
+(defun org-capture-edit-inbox-file ()
+  "Edit the inbox.org file"
+  (interactive)
+  (find-file (expand-file-name (format "%s" org-default-inbox-file))))
+
+;; Edit the projects.org file
+(defun org-capture-edit-projects-file ()
+  "Edit the projects.org file"
+  (interactive)
+  (find-file (expand-file-name (format "%s" org-default-projects-file))))
+
+;; Edit the agenda.org file
+(defun org-capture-edit-agenda-file ()
+  "Edit the agenda.org file"
+  (interactive)
+  (find-file (expand-file-name (format "%s" org-default-agenda-file))))
+
+;; Edit the notes.org file
+(defun org-capture-edit-notes-file ()
+  "Edit the notes.org file"
+  (interactive)
+  (find-file (expand-file-name (format "%s" org-default-notes-file))))
 
 ;; Key shortcuts functions
 (defun org-capture-inbox ()
