@@ -249,7 +249,7 @@ SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
                )))
        ;; bbdb contact management
        (when (locate-library "bbdb")
-         '(("C" "Show All Contacts" entry
+         '(("B" "Show All Contacts" entry
             (file org-capture-bbdb-show))
            ("c" "Create a New Contact" entry
             (file org-capture-bbdb-create))
@@ -361,7 +361,7 @@ SCHEDULED: <%(org-custom-timestamp-prompt-format) .+2d/4d>
        (defun org-capture-bbdb-show ()
          (interactive)
          (call-interactively 'bbdb-display-all-records)
-         (org-capture nil "C"))
+         (org-capture nil "B"))
 
        (defun org-capture-bbdb-create ()
          (interactive)

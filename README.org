@@ -3,39 +3,40 @@
 [[docs/screenshot.png]]
 
 * practical.org.el
-All-in-one pragmatic workflow system for vanilla Emacs that just works.
-Includes a practical GTD system (Getting Things Done), Time management system,
-Habit management system, Contact management system, Zettelkasten and mobile
-app synchronization out-of-the box.
+A simple, all-in-one workflow system for regular Emacs.
+
+Includes a useful GTD system (Getting Things Done), time management system,
+habit management system, contact management system, Zettelkasten, and mobile app
+synchronisation out-of-the box.
 
 * Motivation
 
-I'd like to create a GTD+Zettelkasten workflow system that is lightweight,
-simple and practical, using only vanilla Emacs and that caters to exactly what I
-need for my day-to-day tasks.
+Using only stock Emacs, I want to build a lightweight, straightforward, and
+useful GTD+Zettelkasten workflow system that is tailored specifically to my
+needs for daily tasks.
 
-I have explored and personally used several GTD system, and found them to be
-overly complex for my needs.
+I've looked into and utilised a few GTD systems, and I found them to be overly
+complicated for what I needed.
 
-The workflow configuration aims to have a practical GTD system using only
-vanilla Emacs without any unnecessary packages to be usable.
+The configuration also comes pre-configured with Zettelkasten, Contact
+Management, and Habit Management systems in addition to GTD workflow.
 
-In addition to GTD workflow, the setup also includes Zettelkasten, Contact
-Management and Habit Management systems out-of-the box.
+The workflow configuration aims to create a functional GTD system using only
+stock Emacs and a small number of packages.
 
-There is one custom package that can be installed via MELPA/ELPA to support
-CMS which is the =bbdb= v3 package. The package are optional, and the
-configuration will work without it but the CMS menus in the org-capture
-menu will not appear.
+The =bbdb= v3 package is the only custom package that can be installed via
+MELPA/ELPA to enable and support CMS. The configuration will function without
+the package, but the CMS menus in the org-capture menu won't show up. The
+package is optional.
 
 * Installation
 
-To install, add the following line to your =init.el= file.
-You will need to change the org-directory depending to your liking.
-Also, specify the full path pointing to the =practical.org.el= file.
+Add the next line to your =init.el= file for installation.
+The org-directory needs to be adjusted to your preferences.
+Additionally, include the complete path leading to the =practical.org.el= file.
 
 #+BEGIN_SRC bash
-# Clone the repository 
+# Clone the repository
 git clone https://github.com/jjuliano/practical.org.el.git ~/.emacs.d/pkgs/practical.org.el
 
 # Append the following lines to your init.el file
@@ -62,8 +63,11 @@ cat << EOF >> ~/.emacs.d/init.el
 EOF
 #+END_SRC
 
-Next, copy the included files to your org-directory. See [[#included-org-files][Included org files]] for more details.
-You also need to create the "notes/" directory for your Zettelkasten notes. See [[#zettelkasten][Zettelkasten]] for more details.
+Copy the supplied files to your org-directory after that.
+Check out [[#included-org-files][Included org files]] for further information.
+
+The "notes/" directory must be created as well for your Zettelkasten notes.
+For further information, see [[#zettelkasten][Zettelkasten]].
 
 #+BEGIN_SRC bash
 # Make sure that the org directory & the zettelkasten notes directory are created
@@ -73,32 +77,39 @@ mkdir -p ~/Documents/Emacs/org/notes
 cp ~/.emacs.d/pkgs/practical.org.el/files/*.{txt,org} ~/Documents/Emacs/org/.
 #+END_SRC
 
-Then start Emacs then press =C-c=. You will be presented with the org-capture menu, and type the first letter.
+Start Emacs next, and then hit =C-c=.
+When the org-capture menu appears, start typing the first letter.
 
-You might want to install the =bbdb= package for [[#contact-management][Contact Management]] feature, to do so,
-just type =M-x package-install= then type =bbdb=. Restart Emacs then you will be presented with the CMS menu when you press =C-c=.
+For the [[#contact-management][Contact Management]] functionality, you might want to install the =bbdb=
+package. To accomplish this, simply execute =M-x package-install= followed by
+=bbdb=.
+
+Once Emacs has been restarted, pressing =C-c= will display the CMS menu.
 
 ** Included org files
 
-This workflow configuration uses a predefined parent nodes. The suggested org
-files templates are found in the =files/= directory. Just copy those files to
-your org-directory.
+The parent nodes used in this workflow setup are predetermined.
+The =files/= directory contains the preferred org file templates.
+To your org-directory, simply copy those files.
 
-In addition to the org-files, a =context.txt= file can also be found which
-contains all the system-wide tags and context that you can use in the org file.
+A =context.txt= file that contains all the system-wide tags and context that you
+can use in the org file can also be found in addition to the org-files.
 
 * Settings
 
-There are several variables settings that you can change the behaviour of this
-configuration. They are the =org-timestamp-12-hours=, =org-disable-context-file= and
-=org-hide-all-non-scheduled-items=.
+The behaviour of this configuration can be altered by changing a number of
+variables.
+
+They are the =org-hide-all-non-scheduled-items=, =org-disable-context-file=, and
+=org-timestamp-12-hours=.
 
 ** 12 hours or 24 hours time format
 
-To choose the timestamp format that will be used in your org-agenda-files, you
-can define the =org-timestamp-12-hours= variable. A value of =t= will set the
-current timestamp to use the American style, otherwise, set to =nil= or do not
-define the variable to set to European time format.
+You can provide the =org-timestamp-12-hours= variable to specify the timestamp
+format that will be applied to your org-agenda-files.
+
+If the current timestamp has a value of =t=, American time format will be used;
+otherwise, set it to =nil= or do not specify the variable.
 
 #+BEGIN_SRC lisp
 ;; Setting this variable to 't' will use the American style (12-hour) timestamp,
@@ -109,10 +120,12 @@ define the variable to set to European time format.
 
 ** Hide all non-scheduled items in Agenda view
 
-The default behavior is all non-scheduled items such as =inbox=, and  =notes=,
-will be shown in the Agenda view. This allows you to see all the items
-created on that particular timestamp. To hide all the non-scheduled items in
-agenda view, set the =org-hide-all-non-scheduled-items= to =t=.
+By default, all unscheduled items, including those in your inbox and notes, are
+displayed in the Agenda view. You can then see every item that was created at
+that specific timestamp.
+
+Set the =org-hide-all-non-scheduled-items= to =t= to hide all non-scheduled
+items in agenda view.
 
 #+BEGIN_SRC lisp
 ;; Setting this variable to 't' will hide all the non-scheduled items such as
@@ -123,10 +136,13 @@ agenda view, set the =org-hide-all-non-scheduled-items= to =t=.
 
 ** Use context file
 
-You can add/remove/edit context and tags in a =context.txt= file. This file will
-be sourced to contain all the additional context/tags that you can use in your
-org entries. To disable this feature, set the =org-disable-context-file=, or
-don't create the =context.txt= file.
+The =context.txt= file allows you to add, remove, and change context and tags.
+
+All of the additional context/tags that you can use in your org entries will be
+contained in this file, which will be sourced.
+
+Set the =org-disable-context-file= variable or simply skip copying the
+=context.txt= file to disable this feature.
 
 #+BEGIN_SRC lisp
 ;; Setting this variable to 't' will disable sourcing all the context/tags from
@@ -139,9 +155,13 @@ don't create the =context.txt= file.
 
 ** Org-Capture Menu
 
-You start by opening the capture menu. On this menu, you can select the GTD or
-Zettelkasten actions that you want to do. Here are all the actions that will be
-presented in the capture menu. Org agenda can be opened by pressing =C-c a=.
+You begin by launching the capture menu.
+
+You can choose the GTD or Zettelkasten actions you want to perform from this
+menu. All of the options that will be available in the capture menu are listed
+here.
+
+Pressing =C-c a= brings up the org agenda.
 
 | Action              | Description                                     | File                           | Keystroke        |
 |---------------------+-------------------------------------------------+--------------------------------+------------------|
@@ -159,8 +179,10 @@ presented in the capture menu. Org agenda can be opened by pressing =C-c a=.
 
 ** Recurring Agenda, Routine and Habit/Goal items
 
-Recurring, Routine and Habit items are repeating scheduled items that will
-appear in the agenda view. The capture menu has a pre-defined schedule value.
+Scheduled repeated items that will show up in the agenda view are those marked
+as Recurring, Routine, and Habit.
+
+There is a pre-set schedule value in the capture menu.
 
 | Type              | Description                        | Initial State                 | Pre-defined schedules | File                           |
 |-------------------+------------------------------------+-------------------------------+-----------------------+--------------------------------|
@@ -168,21 +190,25 @@ appear in the agenda view. The capture menu has a pre-defined schedule value.
 | Routine           | Tasks that needs to do repeatedly  | TODO/NEXT                     | Every day             | projects.org/Recurring/Routine |
 | Habit             | Repeated tasks with a visual graph | HABIT/GOAL/REFLECTION         | 2 to 4 days           | projects.org/Recurring/Habit   |
 
-Habit tasks will begin counting on the start date, and on completion, =DONE=
-habits will switch back to =TODO=, logging the time it is switched to =DONE=
-to the =LOGBOOK= drawer.
+When a habit task is finished, it switches back to =TODO= from =DONE= and the
+moment it was switched to =DONE= is recorded in the =LOGBOOK= folder.
+
+Habit tasks start counting on the start date.
 
 *** Habits
 
-There are two types of Habits, =Achievement Goal= and =Habit Goal=.
+=Achievement Goals= and =Habit Goals= are the two different categories of
+habits.
 
-Achievement goals are =Results-based=, while Habit goals are =Process-oriented=.
+=Achievement Goals= are =results-based=, whereas =Habit Goals= are
+=process-oriented=.
 
-You can create an achievement or an habit item, which will be tagged as either
-=GOAL= or =HABIT=.
+You can create items with the tags =GOAL= or =HABIT= that represent either an
+achievement or a habit.
 
-The location will also be prompted, which will serve as to where you are going
-to perform the habit. Location will be stored in the =:LOCATION:= drawer.
+Additionally, a physical place or location will be asked, which is where you
+will carry out the habit. The drawer labelled =:LOCATION:= will have the
+location value.
 
 **** Achievement Goal
 
@@ -242,7 +268,7 @@ Database), the capture menu will have additional items, namely:
 
 | Action         | Description                | Keystroke |
 |----------------+----------------------------+-----------|
-| All Contacts   | Show all contacts          | C-c c C   |
+| All Contacts   | Show all contacts          | C-c c B   |
 | New Contact    | Create a new contact       | C-c c c   |
 | Search Contact | Regexp search all contacts | C-c c s   |
 
